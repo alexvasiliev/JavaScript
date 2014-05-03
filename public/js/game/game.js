@@ -67,11 +67,11 @@ window.requestAnimFrame = (function() {
             this.lost = false;
             this.play = true;
         },
-        atart : function (){
-            this.play = false;
+        start : function (){
+            this.play = true;
         },
         stop : function (){
-            this.play = true;
+            this.play = false;
         },
 
         __init__: function (){

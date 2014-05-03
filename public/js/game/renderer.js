@@ -21,6 +21,7 @@ define([
             this.angle = 0;
             this.x = 0;
             this.y = 0;
+            console.log(this.ctx);
         },
         drawText : function(text, x, y) {
             this.ctx.fillStyle = "#FFF";

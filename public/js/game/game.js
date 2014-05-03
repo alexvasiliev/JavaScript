@@ -242,7 +242,7 @@ window.requestAnimFrame = (function() {
                 this.playerShip.draw();
                 renderer.resetTempShift();
             }*/
-            renderer.drawText(this.score, 20, 50, 15, "#FFF");
+            renderer.drawText(this.score, 20, 50, 15, 20, "#FFF");
         },
         drawAll : function () {
             this.renderer.clearScene();

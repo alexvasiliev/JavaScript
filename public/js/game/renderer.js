@@ -23,14 +23,39 @@ define([
             this.y = 0;
             console.log(this.ctx);
         },
-        drawText : function(text, x, y) {
+        /*drawWord : function(word, x, y) {
             this.ctx.fillStyle = "#FFF";
             this.ctx.strokeStyle = "#FFF";
             this.ctx.font = "italic 30pt Arial";
-            this.ctx.fillText(text, x, y);
+            this.ctx.fillText(word, x, y);
             //this.ctx.font = 'bold 30px sans-serif';
             //this.ctx.fillText("player name", 20, 100);
+        },*/
+        drawText : function(text, x, y, size, maxWidth, color) {
+            this.ctx.fillStyle = color;
+            this.ctx.strokeStyle = color;
+            this.ctx.font = "italic " + size + "pt Arial";
+            var string = text.toString();
+            var words = string.split(" ");
+            var marginTop = y;
+            var lineHeight = size;
+            var countWords = words.length;
+            var line = "";
+            for (var n = 0; n < countWords; n++) {
+                var testLine = line + words[n] + " ";
+                var testWidth = this.ctx.measureText(testLine).width;
+                if (testWidth > maxWidth) {
+                    this.ctx.fillText(line, x, marginTop);
+                    line = words[n] + " ";
+                    marginTop += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            this.ctx.fillText(line, x, marginTop);
         },
+
         setTempShift : function (x, y, angle){
             this.x += x;
             this.y += y;

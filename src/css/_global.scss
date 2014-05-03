@@ -1,0 +1,49 @@
+%base_big_black_box {
+	background-color: rgba(0,0,0,1);
+	width: 300px;
+	padding: 20px;
+	display: block;
+	font-size: 30px;
+	font-family: Helvetica;
+	text-decoration: none;
+	text-align: center;
+	color: rgba(255,255,255,1);
+	font-weight: bold;
+	margin:0 auto;
+}
+
+%base_medium_black_box {
+	@extend %base_big_black_box;
+	
+	width: 125px;
+	font-size: 20px;
+	margin: 0;
+}
+
+%base_big_black_button {
+	@extend %base_big_black_box;
+	
+	&:hover {
+	background-color: rgba(64,64,64,1);
+	}
+}
+
+%base_med_black_button {
+	@extend %base_medium_black_box;
+	&:hover {
+		@extend %base_big_black_button:hover;
+	}
+}
+
+
+%base_align_center {
+	text-align: center;
+}
+
+
+@mixin border-radius($value) {
+	-webkit-border-radius: $value; 
+	-moz-border-radius: $value; 
+	-khtml-border-radius: $value;
+	border-radius: $value;
+}

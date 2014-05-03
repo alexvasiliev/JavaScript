@@ -1,0 +1,11 @@
+.mainmenu {
+	@extend %base_align_center;
+}
+
+.mainmenu__button {
+	@extend %base_big_black_button;
+}
+
+.mainmenu__title {
+	@extend %base_big_black_box;
+}

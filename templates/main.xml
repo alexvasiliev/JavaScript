@@ -1,0 +1,11 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+	<div class = "mainmenu">
+		<h1 class="mainmenu__title">EPIC GAME!</h1>
+		<br/>
+		<h1 class="mainmenu__main-text">Main Menu</h1>
+		<br/>
+		<a href="#scoreboard" class="mainmenu__button">ScoreBoard</a>
+		<br/>
+		<a href="#game" class="mainmenu__button">Start game</a>
+	</div>
+</fest:template>

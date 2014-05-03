@@ -1,0 +1,25 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+	<div class = "scoreboard">
+		<h1 class="scoreboard__title">EPIC GAME</h1>
+		<br/>
+		<h1 class="scoreboard__main-text">Scoreboard</h1>
+		<br/>
+		<div id = "score_table-wrapper">
+			<table class="scoreboard__table" id="score_table">
+				<tr>
+					<th class="scoreboard__table__cell-head">№</th>
+					<th class="scoreboard__table__cell-head">Score</th>
+					<th class="scoreboard__table__cell-head">Name</th>
+				</tr>
+				<fest:for iterate="json" index="i">
+					<tr>
+						<td class="scoreboard__table__cell"><fest:value>i+1</fest:value></td>
+						<td class="scoreboard__table__cell"><fest:value>json[i].score</fest:value></td>
+						<td class="scoreboard__table__cell"><fest:value>json[i].name</fest:value></td>			
+					</tr>
+				</fest:for>
+			</table>
+		</div>
+		<a href="#" class="scoreboard__button">&#x25c4 Back</a>	
+	</div>
+</fest:template>

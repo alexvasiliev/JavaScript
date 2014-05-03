@@ -1,0 +1,16 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+	<div class = "gameoverscreen">
+		<h1 class="gameoverscreen__title">GAME OVER!</h1>
+		<form class="gameoverscreen__form" id='gameover_form' method="post">
+			<span class="gameoverscreen__form__score">
+				Your Score is: 
+			</span>
+			<span class="gameoverscreen__form__score" id="score-holder"></span>
+
+			<input type="hidden" id="player_score" value=""  name="score"/>
+			<input type="text" class="gameoverscreen__form__text" placeholder="Name"  id="player_name" name="name" required="true"/>
+			<input type="submit" class="gameoverscreen__form__submit" value="Submit!" />
+		</form>
+		<a href="#" class="gameoverscreen__button">&#x25c4 MainMenu</a>
+	</div>
+</fest:template>

@@ -1,0 +1,73 @@
+@charset "UTF-8";
+.gamescreen__button, .gameoverscreen__button, .scoreboard__button, .mainmenu__button, .gameoverscreen__title, .gameoverscreen__form, .mainmenu__title, .scoreboard__title {
+  background-color: black;
+  width: 300px;
+  padding: 20px;
+  display: block;
+  font-size: 30px;
+  font-family: Helvetica;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  margin: 0 auto; }
+
+.gamescreen__button, .gameoverscreen__button, .scoreboard__button {
+  width: 125px;
+  font-size: 20px;
+  margin: 0; }
+
+.gamescreen__button:hover, .gameoverscreen__button:hover, .scoreboard__button:hover, .gameoverscreen__form __submit:hover, .mainmenu__button:hover {
+  background-color: #404040; }
+
+.gamescreen, .gameoverscreen, .mainmenu, .scoreboard {
+  text-align: center; }
+
+.gameoverscreen__form __text, .gameoverscreen__form __submit {
+  font-size: 14px;
+  font-family: Helvetica;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px; }
+
+.gameoverscreen__form {
+  margin: 20px auto; }
+  .gameoverscreen__form __score {
+    font-size: 20px;
+    font-family: Helvetica;
+    font-weight: bold; }
+  .gameoverscreen__form __text {
+    border: 1px solid #cccccc;
+    background: white !important;
+    /*желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым*/
+    outline: none;
+    /*удаляет обводку в браузерах хром(желтая) и сафари(синяя)*/
+    height: 24px;
+    width: 200px;
+    color: #000; }
+    .gameoverscreen__form __text:disabled {
+      background: #888;
+      color: #555; }
+  .gameoverscreen__form __submit {
+    background-color: black;
+    height: 30px;
+    width: 95px;
+    text-align: center;
+    color: white;
+    font-weight: bold; }
+
+.scoreboard__table {
+  border-spacing: 0;
+  border: 1px solid black;
+  margin: 0 auto; }
+  .scoreboard__table __cell {
+    border: 1px solid black;
+    font-size: 25pt;
+    font-family: Helvetica;
+    text-align: center;
+    width: 300px; }
+    .scoreboard__table __cell -head {
+      margin: 0px;
+      background-color: black;
+      color: white; }

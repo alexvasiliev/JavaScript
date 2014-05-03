@@ -1,0 +1,10 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+	<div class = "gamescreen">
+		<div id="gameoverform"></div>
+<!--		<center><a class="gamescreen__button" id="gameover_test">Gameover</a></center>-->
+		<canvas id="canvas" >
+			Aww, your browser doesn't support HTML5!
+		</canvas>
+		<a href="#" class="gamescreen__button">&#x25c4 Back</a>
+	</div>
+</fest:template>

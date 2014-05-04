@@ -18,6 +18,7 @@ define([
             this.gun = new BindedObject(gunImg);
             this.gun.bind = this;
 
+            console.log("Canon "+baseImg+", "+gunImg);
 
             if(baseClass == 1){
                 this.width = 13;

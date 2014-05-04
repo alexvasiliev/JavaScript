@@ -22,16 +22,18 @@ define([
                 this.x = Math.random()*dispersion;
                 this.y = Math.random()*dispersion;
                 this.angle = Math.random()*Math.PI*2;
-                this.width = this.height = 50*(Math.random()+1);
+                this.size = 50*(Math.random()+1);
                 this.depth = 10*(Math.random()+1);
+                this.width = this.height = this.size/this.depth;
                 game.background.push(this);
             }
             if(type == 2 || type == "glow"){
                 this.x = Math.random()*dispersion;
                 this.y = Math.random()*dispersion;
                 this.angle = Math.random()*Math.PI*2;
-                this.width = this.height = 50*(Math.random()+1);
+                this.size= 50*(Math.random()+1);
                 this.depth = 10*(Math.random()+1);
+                this.width = this.height = this.size/this.depth;
                 game.background.push(this);
             }
 

@@ -1,7 +1,9 @@
 define([
-    'classy'
+    'classy',
+    'game/spritecontroller'
 ], function (
-    Class
+    Class,
+    SpriteController
 ){
     var BaseObject = Class.$extend ( {
 
@@ -13,19 +15,17 @@ define([
             this.angle = 0;
             this.img = Image;
             this.todelete = false;
-            this.alpha = -1;
-            //this.renderer = renderer;
-            //this.img.src = 'static/epic.png';
+            this.alpha = 1;
+            if(Image != null){
+                game.addSpriteController(new SpriteController(this, Image.src));
+            }
         },
 
         turn : function () {
-            /*this.x += this.vx;
-            this.y += this.vy;
-            this.angle += this.vangle;*/
         },
 
         draw : function () {
-            renderer.drawObject(this);
+            //renderer.drawObject(this);
         },
     });
     return BaseObject;

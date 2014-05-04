@@ -7,6 +7,7 @@ define([
 ){
     var BindedObject = BaseObject.$extend ( {
         __init__ : function(Image) {
+            console.log("BindedObject "+Image);
             this.$super(Image);
             this.bind = null;
             this.localx = 0;

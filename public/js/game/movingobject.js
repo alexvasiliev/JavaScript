@@ -7,6 +7,7 @@ define([
 ){
     var MovingObject = BaseObject.$extend ( {
         __init__ : function(Image) {
+            //console.log("MovingObject "+Image);
             this.$super(Image);
             this.vx = 0;
             this.vy = 0;

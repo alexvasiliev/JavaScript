@@ -42,6 +42,7 @@ window.requestAnimFrame = (function() {
             this.clearArray(this.background);
             this.clearArray(this.objects);
             this.clearArray(this.pilots);
+            this.clearArray(this.spriteContainers);
         },
 
         startNew : function (){
@@ -73,6 +74,9 @@ window.requestAnimFrame = (function() {
         stop : function (){
             this.play = false;
         },
+        addSpriteController : function (target){
+            this.spriteContainers.push(target);
+        },
 
         __init__: function (){
             this.ships = [];
@@ -80,12 +84,13 @@ window.requestAnimFrame = (function() {
             this.background = [];
             this.objects = [];
             this.pilots = [];
+            this.spriteContainers = [];
 
             game = this;
 
             this.renderer = new Renderer();
             renderer = this.renderer;
-            this.setSceneSize(800, 600);
+            renderer.setSceneSize(800, 600);
 
             this.engine = new Engine();
             engine = this.engine;
@@ -139,8 +144,8 @@ window.requestAnimFrame = (function() {
         },
         addPlayer : function () {
             this.playerShip = new Ship(1, 1);
-            this.playerShip.x = this.renderer.sceneWidth/2;
-            this.playerShip.y = this.renderer.sceneHeight/2;
+            this.playerShip.x = renderer.sceneWidth/2;
+            this.playerShip.y = renderer.sceneHeight/2;
             this.playerShip.velocity = 0.07;
             this.playerShip.angleVelocity = 0.002;
             this.ships.push(this.playerShip);
@@ -166,8 +171,8 @@ window.requestAnimFrame = (function() {
             //this.playerShip.trace();
 
             var enemyShip = new Ship(1, 1);
-            enemyShip.x = this.renderer.sceneWidth/2+100;
-            enemyShip.y = this.renderer.sceneHeight/2;
+            enemyShip.x = renderer.sceneWidth/2+100;
+            enemyShip.y = renderer.sceneHeight/2;
             enemyShip.velocity = 0.07;
             enemyShip.angleVelocity = 0.002;
             this.ships.push(enemyShip);
@@ -192,13 +197,6 @@ window.requestAnimFrame = (function() {
         },
         addShot : function (shot) {
             this.shots.push(shot);
-        },
-        setSceneSize : function (x, y) {
-            this.renderer.sceneWidth = x;
-            this.renderer.sceneHeight = y;
-
-            this.renderer.canvas.width = this.renderer.sceneWidth;
-            this.renderer.canvas.height = this.renderer.sceneHeight;
         },
         turnMany : function (objects) {
             for (var i = 0; i < objects.length; )
@@ -245,14 +243,28 @@ window.requestAnimFrame = (function() {
             renderer.drawText(this.score, 20, 50, 15, 20, "#FFF");
         },
         drawAll : function () {
-            this.renderer.clearScene();
-            this.renderer.drawBackground();
-            this.renderer.setShift(this.x, this.y);
+            for (var i = 0; i < this.spriteContainers.length; i++)
+            {
+                this.spriteContainers[i].check();
+                if(this.spriteContainers[i].todelete == true){
+                    delete(this.spriteContainers[i]);
+                    this.spriteContainers.splice(i, 1);
+                    i--;
+                }
+
+            }
+            //renderer.clearScene();
+            //renderer.drawBackground();
+            /*renderer.setShift(this.x, this.y);
             this.drawMany(this.background);
             this.drawMany(this.ships);
             this.drawMany(this.shots);
-            this.drawMany(this.objects);
+            this.drawMany(this.objects);*/
             this.drawGUI();
+
+            renderer.mainView.render(renderer.world);
+            renderer.shipView.render(renderer.world);
+            renderer.shopView.render(renderer.world);
         },
         checkBroders : function () {
             this.x += this.vx;

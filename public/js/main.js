@@ -5,9 +5,10 @@ require.config({
         jquery: "lib/jquery",
         underscore: "lib/underscore",
         backbone: "lib/backbone",
-		classy :"lib/classy",
+        classy :"lib/classy",
         Connector: "lib/Connector",
         FnQuery: "lib/FnQuery",
+        pixi: "lib/pixi",
         "socket.io": "/socket.io/socket.io"
     },
     shim: {

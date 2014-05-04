@@ -1,15 +1,15 @@
 
 
 define([
-    'classy'
+    'classy',
+    'pixi'
 ], function (
-    Class
+    Class,
+    Pixi
 ){
     var Renderer = Class.$extend ( {
 
         __init__: function (){
-            this.sceneWidth = 800;
-            this.sceneHeight = 600;
 
             this.canvas = document.getElementById('canvas');
             this.canvas.width = this.sceneWidth;
@@ -21,16 +21,21 @@ define([
             this.angle = 0;
             this.x = 0;
             this.y = 0;
-            console.log(this.ctx);
+
+            this.sceneWidth = 800;
+            this.sceneHeight = 600;
+            this.world = new Pixi.Stage(0x000000);
+            console.log(this.world.children);
+            this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight);
+            this.shipView = Pixi.autoDetectRenderer(this.sceneWidth/4, this.sceneHeight/4);
+            this.shopView = Pixi.autoDetectRenderer(this.sceneWidth/2, this.sceneHeight/2);
+            document.getElementById("GameScreenView").appendChild(this.mainView.view);
+            document.getElementById("GameScreenView").appendChild(this.shipView.view);
+            document.getElementById("GameScreenView").appendChild(this.shopView.view);
         },
-        /*drawWord : function(word, x, y) {
-            this.ctx.fillStyle = "#FFF";
-            this.ctx.strokeStyle = "#FFF";
-            this.ctx.font = "italic 30pt Arial";
-            this.ctx.fillText(word, x, y);
-            //this.ctx.font = 'bold 30px sans-serif';
-            //this.ctx.fillText("player name", 20, 100);
-        },*/
+        setSceneSize : function (x, y){
+
+        },
         drawText : function(text, x, y, size, maxWidth, color) {
             this.ctx.fillStyle = color;
             this.ctx.strokeStyle = color;
@@ -55,7 +60,6 @@ define([
             }
             this.ctx.fillText(line, x, marginTop);
         },
-
         setTempShift : function (x, y, angle){
             this.x += x;
             this.y += y;
@@ -66,21 +70,24 @@ define([
             this.y = this.realy;
             this.angle = 0;
         },
-        superDraw : function (image, x, y, width, height, angleInRadians) {
-            this.ctx.translate(x, y);
-            this.ctx.rotate(angleInRadians);
-            this.ctx.drawImage(image, -width / 2, -height / 2, width, height);
-            this.ctx.rotate(-angleInRadians);
-            this.ctx.translate(-x, -y);
-        },
         superDraw : function (image, x, y, width, height, angleInRadians, alpha) {
-            this.ctx.translate(x, y);
+            var texture = Pixi.Texture.fromImage(image.src);
+            var sprite = new Pixi.Sprite(texture);
+            sprite.anchor.x = 0.5;
+            sprite.anchor.y = 0.5;
+    // move the sprite t the center of the screen
+            sprite.position.x = x;
+            sprite.position.y = y;
+            sprite.alpha = alpha;
+            sprite.rotation = angleInRadians;
+            this.world.addChild(sprite);
+            /*this.ctx.translate(x, y);
             this.ctx.globalAlpha = alpha;
             this.ctx.rotate(angleInRadians+this.angle);
             this.ctx.drawImage(image, -width / 2, -height / 2, width, height);
             this.ctx.rotate(-angleInRadians-this.angle);
             this.ctx.globalAlpha = 1;
-            this.ctx.translate(-x, -y);
+            //this.ctx.translate(-x, -y);*/
         },
         setShift : function (x, y) {
             this.realx = this.x = x;

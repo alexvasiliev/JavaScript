@@ -8,11 +8,12 @@ define([
     var Shop = BaseObject.$extend ( {
         __init__ : function() {
             var img  = resourses["shop_screen"];
+            console.log("BaseObject "+img);
             this.$super(img);
-            this.x = renderer.sceneWidth/2;
-            this.y = renderer.sceneHeight/2;
-            this.width = renderer.sceneWidth-100;
-            this.height = renderer.sceneHeight-100;
+            this.x = 200;//-renderer.sceneWidth/2;
+            this.y = 300;//-renderer.sceneHeight/2;
+            this.width = 0;//renderer.sceneWidth-100;
+            this.height = 0;//renderer.sceneHeight-100;
             this.modules = [];
             this.items = [];
             this.inventaryx = 200;

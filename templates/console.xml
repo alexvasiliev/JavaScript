@@ -1,0 +1,8 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+	<link rel="stylesheet" type="text/css" href="/common.css" />
+	<canvas id="canvas"></canvas><br />
+	<div id="console">
+		console
+		<div id="message"></div>
+	</div>
+</fest:template>

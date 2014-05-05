@@ -4,14 +4,16 @@ define([
     'views/game',
     'views/scoreboard',
 	'views/gameover',
-	'views/viewManager'
+	'views/viewManager',
+    'views/joystick'
 ], function(
 	Backbone,
 	main,
 	game,
 	scoreboard,
 	gameover,
-	viewManager
+	viewManager,
+    joystick
 ){
 
     var Router = Backbone.Router.extend({
@@ -19,7 +21,8 @@ define([
         routes: {
             'scoreboard': 'scoreboardAction',
             'game': 'gameAction',
-            '*default': 'defaultActions',
+            'joystick': 'joystickAction',
+            '*default': 'defaultActions'
         },
 		initialize: function () {
 			console.log('router::initialize');
@@ -27,6 +30,7 @@ define([
 			viewManager.handle(main);
 			viewManager.handle(game);
 			viewManager.handle(gameover);
+            viewManager.handle(joystick);
         },
         defaultActions: function () {
             console.log("router::main");
@@ -39,6 +43,10 @@ define([
         scoreboardAction: function () {
             console.log("router::scoreboard");
             scoreboard.show();
+        },
+        joystickAction: function() {
+            console.log("router::joystick");
+            joystick.show();
         }
 
     });

@@ -7,4 +7,10 @@
 		</canvas>
 		<a href="#" class="gamescreen__button">&#x25c4 Back</a>
 	</div>
+
+		<div id="console">
+		console
+		<div id="message"></div>
+		
+	</div>
 </fest:template>

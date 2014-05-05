@@ -39,7 +39,7 @@
     font-weight: bold; }
   .gameoverscreen__form __text {
     border: 1px solid #cccccc;
-    background: white !important;
+    background: #ffffff !important;
     /*желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым*/
     outline: none;
     /*удаляет обводку в браузерах хром(желтая) и сафари(синяя)*/

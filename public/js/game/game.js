@@ -9,7 +9,8 @@ define([
     'game/pilot',
     'game/canon',
     'game/resourses',
-    'game/shop'
+    'game/shop',
+    'pixi'
 ], function (
     Class,
     Engine,
@@ -21,7 +22,8 @@ define([
     Pilot, 
     Canon,
     Resourses,
-    Shop
+    Shop,
+    Pixi
 ){
 window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -263,6 +265,14 @@ window.requestAnimFrame = (function() {
             this.drawGUI();
 
             renderer.mainView.render(renderer.world);
+
+            //console.log(renderer.shipView);
+            //renderer.shipView.render(renderer.world);
+            ///*
+            renderer.shipView.projection.x =  0;
+            renderer.shipView.projection.y =  0;
+            //*/
+
             renderer.shipView.render(renderer.world);
             renderer.shopView.render(renderer.world);
         },

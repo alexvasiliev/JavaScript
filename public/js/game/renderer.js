@@ -25,6 +25,7 @@ define([
             this.sceneWidth = 800;
             this.sceneHeight = 600;
             this.world = new Pixi.Stage(0x000000);
+            this.world.rotation = 1;
             console.log(this.world.children);
             this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight);
             this.shipView = Pixi.autoDetectRenderer(this.sceneWidth/4, this.sceneHeight/4);

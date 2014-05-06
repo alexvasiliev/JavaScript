@@ -10,7 +10,8 @@ define([
     'game/canon',
     'game/resourses',
     'game/shop',
-    'pixi'
+    'pixi',
+    'game/drawer'
 ], function (
     Class,
     Engine,
@@ -23,7 +24,8 @@ define([
     Canon,
     Resourses,
     Shop,
-    Pixi
+    Pixi,
+    Drawer
 ){
 window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -48,6 +50,10 @@ window.requestAnimFrame = (function() {
         },
 
         startNew : function (){
+            this.newGame = true;
+            this.play = true;
+        },
+        initNew : function (){
             this.clearAll();
 
             this.addPlayer();
@@ -64,11 +70,10 @@ window.requestAnimFrame = (function() {
             this.enemyPower = 1;
             this.score = 0;
 
-            this.lastSeconds = 30;
-
             this.pause = false;
             this.lost = false;
             this.play = true;
+            this.newGame = false;
         },
         start : function (){
             this.play = true;
@@ -100,7 +105,7 @@ window.requestAnimFrame = (function() {
         },
 
         __init__: function (){
-            oneFrame = 5;
+            this.ready = false;
             this.ships = [];
             this.shots = [];
             this.background = [];
@@ -120,6 +125,11 @@ window.requestAnimFrame = (function() {
             this.resourses = new Resourses();
             resourses = this.resourses;
 
+            this.drawer = new Drawer();
+            drawer = this.drawer;
+
+            
+
             this.shop = new Shop();
             shop = this.shop;
 
@@ -130,6 +140,7 @@ window.requestAnimFrame = (function() {
             this.pause = false;
             this.play = false;
             this.lost = false;
+            this.newGame = false;
 
             this.spacePressed = false;
 
@@ -294,7 +305,6 @@ window.requestAnimFrame = (function() {
                 shiftPoint.y = this.y;
                 //console.log(shiftPoint);
                 renderer.mainView.render(renderer.world, shiftPoint);
-                oneFrame -= 1;
             //}
 
             //console.log(renderer.shipView);
@@ -340,14 +350,26 @@ window.requestAnimFrame = (function() {
         },
         animloop : function(){
             var game = this;
-            game.update();
+            if(this.ready == true){
+                if(this.newGame == true){
+                    console.log("init");
+                    this.initNew();
+                }
+                console.log("game");
+                game.update();
+            }else{
+                console.log("not loaded yet");
+                if(resourses.loaded == true){
+                    console.log("ready");
+                    this.ready = true;
+                }
+            }
             requestAnimFrame(function() {
                 game.animloop();
             });
         },
         gameOver :function () {
             console.log("Game Over");
-            this.lastSeconds -= 1;
             this.play = false;
             
         },

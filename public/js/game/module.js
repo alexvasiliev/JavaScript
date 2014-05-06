@@ -31,7 +31,11 @@ define([
                 this.mainImage = resourses["ship_module"+type];
                 this.secondryImage = resourses["ship_module_destroyed"+type];
             }
-            this.$super(this.mainImage);
+
+            drawer.newDrawing(200, 200);
+            drawer.drawBase(resourses.ship_module0, 150, 150, 20, 20);
+
+            this.$super(drawer.getImage());
 
             //this.cracks = [];
             this.item = null;

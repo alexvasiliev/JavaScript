@@ -12,6 +12,7 @@ define([
     Module
 ){
     var Ship = MovingObject.$extend ( {
+        //__init__ : function(type, number) {
         __init__ : function(type, number) {
             //img = resourses["ship_body"+type];
             this.$super();

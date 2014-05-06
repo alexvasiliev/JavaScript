@@ -3,11 +3,60 @@ define([
 ], function (
     Class
 ){
+    //var downlodableImage = Image;
+    /*var downlodableImage.function(){
+        downlodableImage.prototype.unloadedImg++;
+    };
+    downlodableImage.prototype.unloadedImg = 0;
+    downlodableImage = Image;*/
+    /*downlodableImage.onload = function() {
+        console.log("!!!!!!!!!!!!!!!main.loaded");
+        unloadedImg--;
+        if(unloadedImg == 0){
+            resourses.loaded = true;
+        }
+    };*/
+    /*downlodableImage.prototype.onload = function() {
+        console.log("!!!!!!!!!!!!!!!proto.loaded");
+        unloadedImg--;
+        if(unloadedImg == 0){
+            resourses.loaded = true;
+        }
+    };*/
     var Resourses = Class.$extend ( {
+        loadHandler :function (){
+            resourses.unloaded--;
+            if(resourses.unloaded == 0){
+                resourses.loaded = true;
+            }
+            console.log(resourses.unloaded);
+        },
+
+        loadImages : function (array){
+            console.log(array.length);
+            if(array.length > 0){
+                for(var i = 0; i < array.length; i++){
+                    this[array[i]] = new Image();
+                    this[array[i]].src = "static/JS-" + array[i] + ".png";
+                    this[array[i]].addEventListener('load', this.loadHandler);
+                    this.unloaded++;
+                    console.log(this.unloaded);
+                }
+            }
+        },
 
         __init__: function (){
+            this.unloaded = 0;
+            this.loadImages(["sprite_explosion1","sprite_explosion2", "sprite_glow1",
+                "sprite_glow2", "sprite_flame1", "sprite_flame2", "ship_canon_body1",
+                "ship_canon_body2", "ship_canon_gun1", "ship_canon_gun2", "ship_module0",
+                "ship_module1", "ship_body0", "ship_body1", "ship_module_destroyed0",
+                "ship_module_destroyed1", "ship_body_destroyed0", "ship_body_destroyed1",
+                "shot1", "shop_screen" ]);
+            console.log(this.sprite_explosion1);
+            this.loaded = false;
 
-            this.sprite_explosion1 = new Image();
+            /*this.sprite_explosion1 = new downlodableImage();
             this.sprite_explosion1.src = 'static/JS-sprite_explosion1.png';
             this.sprite_explosion2 = new Image();
             this.sprite_explosion2.src = 'static/JS-sprite_explosion2.png';
@@ -55,7 +104,7 @@ define([
             this.background.src = 'static/background.png';
 
             this.shop_screen = new Image();
-            this.shop_screen.src = 'static/JS-shop_screen.png';
+            this.shop_screen.src = 'static/JS-shop_screen.png';*/
         },
         getXMLDocument : function (url)  
         {  

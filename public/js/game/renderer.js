@@ -24,9 +24,10 @@ define([
 
             this.sceneWidth = 800;
             this.sceneHeight = 600;
+            
             this.world = new Pixi.Stage(0x000000);
 
-            var stars = new Pixi.DisplayObjectContainer();
+            /*var stars = new Pixi.DisplayObjectContainer();
             this.world.addChild(stars);
             var glows = new Pixi.DisplayObjectContainer();
             this.world.addChild(glows);
@@ -37,9 +38,9 @@ define([
             this.world.addChild(items);
 
             var gui = new Pixi.DisplayObjectContainer();
-            this.world.addChild(gui);
-            
-            this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight);
+            this.world.addChild(gui);*/
+
+            this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight, null, true);
             this.shipView = Pixi.autoDetectRenderer(this.sceneWidth/4, this.sceneHeight/4, null, true);
             this.shopView = Pixi.autoDetectRenderer(this.sceneWidth/2, this.sceneHeight/2, null, true);
             document.getElementById("GameScreenView").appendChild(this.mainView.view);

@@ -968,8 +968,9 @@ Object.defineProperty(PIXI.DisplayObject.prototype, 'cacheAsBitmap', {
  * @method updateTransform
  * @private
  */
-PIXI.DisplayObject.prototype.updateTransform = function()
+PIXI.DisplayObject.prototype.updateTransform = function(shift)
 {
+    //console.log("DisplayObject.prototype.updateTransform: "+ shift);
     // TODO OPTIMIZE THIS!! with dirty
     if(this.rotation !== this.rotationCache)
     {
@@ -1002,6 +1003,19 @@ PIXI.DisplayObject.prototype.updateTransform = function()
     worldTransform.c = b10 * a00 + b11 * a10;
     worldTransform.d = b10 * a01 + b11 * a11;
     worldTransform.ty = b10 * a02 + b11 * a12 + parentTransform.ty;
+
+    //console.log(shift);
+    //console.trace();
+     /*var e = new Error('dummy');
+    var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+    .replace(/^\s+at\s+/gm, '')
+    .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
+    .split('\n');
+    console.log(stack);*/
+    if(shift){
+        worldTransform.tx += shift.x;
+        worldTransform.ty += shift.y;
+    }
 
     this.worldAlpha = this.alpha * this.parent.worldAlpha;
 };
@@ -1387,13 +1401,13 @@ PIXI.DisplayObjectContainer.prototype.removeChildren = function(beginIndex, endI
  * @method updateTransform
  * @private
  */
-PIXI.DisplayObjectContainer.prototype.updateTransform = function()
+PIXI.DisplayObjectContainer.prototype.updateTransform = function(shift)
 {
     //this._currentBounds = null;
 
     if(!this.visible)return;
 
-    PIXI.DisplayObject.prototype.updateTransform.call( this );
+    PIXI.DisplayObject.prototype.updateTransform.call( this, shift );
 
     if(this._cacheAsBitmap)return;
 
@@ -3913,13 +3927,14 @@ PIXI.Stage.prototype.setInteractionDelegate = function(domElement)
  * @method updateTransform
  * @private
  */
-PIXI.Stage.prototype.updateTransform = function()
+PIXI.Stage.prototype.updateTransform = function(shift)
 {
+    //console.log(shift);
     this.worldAlpha = 1;
 
     for(var i=0,j=this.children.length; i<j; i++)
     {
-        this.children[i].updateTransform();
+        this.children[i].updateTransform(shift);
     }
 
     if(this.dirty)
@@ -5272,6 +5287,7 @@ PIXI.WebGLGraphics = function()
  */
 PIXI.WebGLGraphics.renderGraphics = function(graphics, renderSession)//projection, offset)
 {
+    console.log("PIXI.WebGLGraphics.renderGraphics");
     var gl = renderSession.gl;
     var projection = renderSession.projection,
         offset = renderSession.offset,
@@ -5311,6 +5327,7 @@ PIXI.WebGLGraphics.renderGraphics = function(graphics, renderSession)//projectio
 
     gl.uniform2f(shader.projectionVector, projection.x, -projection.y);
     gl.uniform2f(shader.offsetVector, -offset.x, -offset.y);
+    //console.log(offset.x+", "+offset.y);
 
     gl.uniform3fv(shader.tintColor, PIXI.hex2rgb(graphics.tint));
 
@@ -5950,7 +5967,7 @@ PIXI.WebGLRenderer.prototype.constructor = PIXI.WebGLRenderer;
  * @method render
  * @param stage {Stage} the Stage element to be rendered
  */
-PIXI.WebGLRenderer.prototype.render = function(stage)
+PIXI.WebGLRenderer.prototype.render = function(stage, shift)
 {
     if(this.contextLost)return;
 
@@ -5969,7 +5986,7 @@ PIXI.WebGLRenderer.prototype.render = function(stage)
     PIXI.WebGLRenderer.updateTextures();
 
     // update the scene graph
-    stage.updateTransform();
+    stage.updateTransform(shift);
 
 
     // interaction
@@ -6057,12 +6074,15 @@ PIXI.WebGLRenderer.prototype.render = function(stage)
  */
 PIXI.WebGLRenderer.prototype.renderDisplayObject = function(displayObject, projection, buffer)
 {
+
+    //console.log("PIXI.WebGLRenderer.prototype.renderDisplayObject");
     // reset the render session data..
     this.renderSession.drawCount = 0;
     this.renderSession.currentBlendMode = 9999;
 
     this.renderSession.projection = projection;
     this.renderSession.offset = this.offset;
+    this.renderSession.offset = new PIXI.Point(1110, 1110);
 
     // start the sprite batch
     this.spriteBatch.begin(this.renderSession);
@@ -8479,13 +8499,13 @@ PIXI.CanvasRenderer.prototype.constructor = PIXI.CanvasRenderer;
  * @method render
  * @param stage {Stage} the Stage element to be rendered
  */
-PIXI.CanvasRenderer.prototype.render = function(stage)
+PIXI.CanvasRenderer.prototype.render = function(stage, shift)
 {
     // update textures if need be
     PIXI.texturesToUpdate.length = 0;
     PIXI.texturesToDestroy.length = 0;
 
-    stage.updateTransform();
+    stage.updateTransform(shift);
 
     this.context.setTransform(1,0,0,1,0,0);
     this.context.globalAlpha = 1;
@@ -9292,6 +9312,7 @@ PIXI.Graphics.prototype.generateTexture = function()
 */
 PIXI.Graphics.prototype._renderWebGL = function(renderSession)
 {
+    console.log("PIXI.Graphics.prototype._renderWebGL");
     // if the sprite is not visible or the alpha is 0 then no need to render this element
     if(this.visible === false || this.alpha === 0 || this.isMask === true)return;
     
@@ -12436,6 +12457,7 @@ PIXI.RenderTexture.prototype.resize = function(width, height)
  */
 PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, clear)
 {
+    console.log("PIXI.RenderTexture.prototype.renderWebGL");
     //TOOD replace position with matrix..
     var gl = this.renderer.gl;
 
@@ -12459,6 +12481,7 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
 
     if(position)
     {
+        //console.log(position.x + ", " + position.y);
         displayObject.worldTransform.tx = position.x;
         displayObject.worldTransform.ty -= position.y;
     }
@@ -12488,6 +12511,7 @@ PIXI.RenderTexture.prototype.renderWebGL = function(displayObject, position, cle
  */
 PIXI.RenderTexture.prototype.renderCanvas = function(displayObject, position, clear)
 {
+    //console.log("PIXI.RenderTexture.prototype.renderCanvas");
     var children = displayObject.children;
 
     var originalWorldTransform = displayObject.worldTransform;
@@ -12496,6 +12520,7 @@ PIXI.RenderTexture.prototype.renderCanvas = function(displayObject, position, cl
 
     if(position)
     {
+        //console.log(position.x + ", " + position.y);
         displayObject.worldTransform.tx = position.x;
         displayObject.worldTransform.ty = position.y;
     }

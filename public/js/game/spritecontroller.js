@@ -10,6 +10,7 @@ define([
             this.owner = owner;
             var texture = Pixi.Texture.fromImage(imgsrc);
             this.sprite = new Pixi.Sprite(texture);
+            //PIXI.Sprite.fromImage("spinObj_01.png");
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
             this.sprite.pivot.x = 0.5;

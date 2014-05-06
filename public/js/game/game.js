@@ -79,8 +79,28 @@ window.requestAnimFrame = (function() {
         addSpriteController : function (target){
             this.spriteContainers.push(target);
         },
+        testXMLParser : function (){
+            xml = resourses.getXMLDocument('static/test.xml');
+
+            var ships = xml.getElementsByTagName("ship");
+            if(ships)
+            for(var i = 0; i < ships.length; i++)
+            {
+                var ship = ships[i];
+                var modules = ship.getElementsByTagName("module");  
+                if(modules)
+                for(var j = 0; j < modules.length; j++)
+                {
+                    var module = modules[i];
+                    var type = module.getElementsByTagName("type")[0].childNodes[0].nodeValue;
+                    console.log(type);
+                }
+               // операции над текущим элементом town  
+            }
+        },
 
         __init__: function (){
+            oneFrame = 5;
             this.ships = [];
             this.shots = [];
             this.background = [];
@@ -113,6 +133,8 @@ window.requestAnimFrame = (function() {
 
             this.spacePressed = false;
 
+
+            this.testXMLParser();
             this.animloop();
         },
         listenToKeyboard : function () {
@@ -264,13 +286,27 @@ window.requestAnimFrame = (function() {
             this.drawMany(this.objects);*/
             this.drawGUI();
 
-            renderer.mainView.render(renderer.world);
+
+            /*if(oneFrame > 0){
+            }else{*/
+                var shiftPoint = {};
+                shiftPoint.x = this.x;
+                shiftPoint.y = this.y;
+                //console.log(shiftPoint);
+                renderer.mainView.render(renderer.world, shiftPoint);
+                oneFrame -= 1;
+            //}
 
             //console.log(renderer.shipView);
             //renderer.shipView.render(renderer.world);
             ///*
-            renderer.shipView.projection.x =  0;
-            renderer.shipView.projection.y =  0;
+            //renderer.shipView.projection.x = 1000;
+            //renderer.shipView.projection.y = 1000;
+            //console.log(renderer.shipView.offset);
+            //renderer.shipView.renderDisplayObject(renderer.world, renderer.shipView.view);
+            //renderer.shipView.moveTo(this.x, this.y);
+            /*renderer.shipView.offset.x = 10000;
+            renderer.shipView.offset.y = 10000;*/
             //*/
 
             renderer.shipView.render(renderer.world);

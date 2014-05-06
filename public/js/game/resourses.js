@@ -6,6 +6,7 @@ define([
     var Resourses = Class.$extend ( {
 
         __init__: function (){
+
             this.sprite_explosion1 = new Image();
             this.sprite_explosion1.src = 'static/JS-sprite_explosion1.png';
             this.sprite_explosion2 = new Image();
@@ -55,6 +56,30 @@ define([
 
             this.shop_screen = new Image();
             this.shop_screen.src = 'static/JS-shop_screen.png';
+        },
+        getXMLDocument : function (url)  
+        {  
+            var xml;  
+            if(window.XMLHttpRequest)  
+            {  
+                xml = new window.XMLHttpRequest();  
+                xml.open("GET", url, false);  
+                xml.send("");  
+                return xml.responseXML;  
+            }  
+            else  
+                if(window.ActiveXObject)  
+                {  
+                    xml = new ActiveXObject("Microsoft.XMLDOM");  
+                    xml.async = false;  
+                    xml.load(url);  
+                    return xml;  
+                }  
+                else  
+                {  
+                    alert("Загрузка XML не поддерживается браузером");  
+                    return null;  
+                }  
         },
     });
     return Resourses;

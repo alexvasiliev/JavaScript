@@ -71,8 +71,8 @@ define([
             /*var enemyx = Math.sin(-target.angle)*target.height/2 + Math.cos(-target.angle)*target.width/2;
             var enemyy1= Math.cos(-target.angle)*target.height/2 - Math.sin(-target.angle)*target.width/2;*/
 
-            if(localx < target.width/2 && localx > -target.width/2 && 
-                localy < target.height/2 && localy > -target.height/2){
+            if(localx < target.sizeX/2 && localx > -target.sizeX/2 && 
+                localy < target.sizeY/2 && localy > -target.sizeY/2){
                 this.hitTarget(target);
             }
             /*var m1 = new MovingObject(this.img);

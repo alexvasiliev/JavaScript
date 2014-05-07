@@ -24,14 +24,14 @@ newImg.src = buffer.toDataURL();
 ctx.drawImage(newImg, 50, 50, 20, 20);*/
         __init__: function (){
             this.canvas = document.createElement('canvas');
-            document.body.appendChild(this.canvas);
+            //document.body.appendChild(this.canvas);
             //this.pixiRenderer = Pixi.autoDetectRenderer(100, 100, this.canvas, false);
             this.renderer = this.canvas.getContext("2d");
         },
         newDrawing : function(width, height){
             this.canvas.width  = width;
             this.canvas.height = height;
-            this.renderer.fillStyle="black";
+            this.renderer.fillStyle = "black";
             this.renderer.fillRect(0, 0, width, height);
             //this.pixiRenderer.render(new Pixi.Stage(0x000000));
 
@@ -63,19 +63,15 @@ ctx.drawImage(newImg, 50, 50, 20, 20);*/
             return newImg;
         },
 
-    });
-    return Drawer;
-});
-
         /*__init__: function (){
             this.stage = new Pixi.Stage(0x000000); 
-            document.body.appendChild(this.renderer.view);
+            this.pixiRenderer = Pixi.autoDetectRenderer(100, 100, this.canvas, false);
+            document.body.appendChild(this.pixiRenderer.view);
             var animate = this.animate;
             //requestAnimFrame( animate );
         },
         newDrawing : function(width, height){
-            console.log(this.renderer);
-            this.renderer.resize(width, height);
+            this.pixiRenderer.resize(width, height);
             for(var i = 0 , j = this.stage.children.length; i < j; i++)
             {
                 this.stage.removeChild(this.stage.children[i]);
@@ -107,15 +103,19 @@ ctx.drawImage(newImg, 50, 50, 20, 20);*/
             console.log(this.stage.children.length);
             this.stage.addChild(sprite);
             console.log(this.stage.children.length);
-            this.renderer.render(this.stage);
+            this.pixiRenderer.render(this.stage);
         },
         getImage : function(){
-            this.renderer.render(this.stage);
+            this.pixiRenderer.render(this.stage);
             console.log(this.stage.children.length);
             var newImg = new Image();
-            newImg.src = this.renderer.view.toDataURL();
+            newImg.src = this.pixiRenderer.view.toDataURL();
             return newImg;
         },*/
+    });
+    return Drawer;
+});
+
 /*
 // create an new instance of a pixi stage
     

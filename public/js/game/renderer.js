@@ -22,10 +22,11 @@ define([
             this.x = 0;
             this.y = 0;
 
-            this.sceneWidth = 800;
-            this.sceneHeight = 600;
-            
+            this.sceneWidth = window.innerWidth;
+            this.sceneHeight = window.innerHeight;
+
             this.world = new Pixi.Stage(0x000000);
+            this.gui = new Pixi.Stage(0x000000);
 
             /*var stars = new Pixi.DisplayObjectContainer();
             this.world.addChild(stars);
@@ -40,12 +41,18 @@ define([
             var gui = new Pixi.DisplayObjectContainer();
             this.world.addChild(gui);*/
 
-            this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight, null, true);
-            this.shipView = Pixi.autoDetectRenderer(this.sceneWidth/4, this.sceneHeight/4, null, true);
-            this.shopView = Pixi.autoDetectRenderer(this.sceneWidth/2, this.sceneHeight/2, null, true);
+            this.mainView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight, null, false);
+            //this.shipView = Pixi.autoDetectRenderer(this.sceneWidth/4, this.sceneHeight/4, null, true);
+            this.shopView = Pixi.autoDetectRenderer(this.sceneWidth, this.sceneHeight, null, true);
             document.getElementById("GameScreenView").appendChild(this.mainView.view);
-            document.getElementById("GameScreenView").appendChild(this.shipView.view);
+            //document.getElementById("GameScreenView").appendChild(this.shipView.view);
             document.getElementById("GameScreenView").appendChild(this.shopView.view);
+            this.mainView.view.style.position = "absolute";
+            this.mainView.view.style.top = "0px";
+            this.mainView.view.style.left = "0px";
+            this.shopView.view.style.position = "absolute";
+            this.shopView.view.style.top = "0px";
+            this.shopView.view.style.left = "0px";
         },
         setSceneSize : function (x, y){
 

@@ -8,12 +8,30 @@ define([
     var Shop = BaseObject.$extend ( {
         __init__ : function() {
             var img  = resourses["shop_screen"];
-            console.log("BaseObject "+img);
-            this.$super(img);
-            this.x = 200;//-renderer.sceneWidth/2;
-            this.y = 300;//-renderer.sceneHeight/2;
-            this.width = 0;//renderer.sceneWidth-100;
-            this.height = 0;//renderer.sceneHeight-100;
+            this.$super(img, "gui");
+            this.x = renderer.sceneWidth/2;
+            this.y = renderer.sceneHeight/2;
+            var shift = 100;
+            var sizeModifier = 2/2;
+            var width = renderer.sceneWidth-shift;
+            var height = renderer.sceneHeight-shift
+            var sizeK = img.width / img.height;
+            console.log("Shop "+ img);
+            console.log(width+","+height);
+            console.log(img.width+","+img.height);
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+            if(img.width > 0 && img.height > 0 && width / img.width < height / img.height){
+                console.log("width");
+                this.width = width*sizeModifier;
+                this.height = this.width / sizeK;
+            }else{
+                console.log("height");
+                this.height = height*sizeModifier;
+                this.width = this.height * sizeK;
+            }
+            //this.width = renderer.sceneWidth-100;
+            //this.height = renderer.sceneHeight-100;
             this.modules = [];
             this.items = [];
             this.inventaryx = 200;

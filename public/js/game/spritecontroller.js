@@ -6,8 +6,9 @@ define([
     Pixi
 ){
     var SpriteController = Class.$extend ( {
-        __init__ : function(owner, imgsrc) {
+        __init__ : function(stage, owner, imgsrc) {
             this.owner = owner;
+            this.stage = stage;
             var texture = Pixi.Texture.fromImage(imgsrc);
             this.sprite = new Pixi.Sprite(texture);
             //PIXI.Sprite.fromImage("spinObj_01.png");
@@ -15,13 +16,13 @@ define([
             this.sprite.anchor.y = 0.5;
             this.sprite.pivot.x = 0.5;
             this.sprite.pivot.y = 0.5;
-            renderer.world.addChild(this.sprite);
+            renderer[this.stage].addChild(this.sprite);
             this.todelete = false;
         },
         check : function(){
             if(this.owner == null || this.owner.todelete == true){
                 this.todelete = true;
-                renderer.world.removeChild(this.sprite);
+                renderer[this.stage].removeChild(this.sprite);
                 //console.log(this.owner.todelete + ", " + this.todelete);
                 return;
             }

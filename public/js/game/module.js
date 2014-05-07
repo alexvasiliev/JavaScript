@@ -51,6 +51,8 @@ define([
                 this.maxHealth = 500;
                 this.width = 20;
                 this.height = 60;
+                this.sizeX = this.width;
+                this.sizeY = this.height;
                 //this.mass = 10;
                 this.addSlot(2, 0, 0);
                 this.addConnection(2, 0, 30, 0);
@@ -64,6 +66,8 @@ define([
                 this.maxHealth = 100;
                 this.width = 20;
                 this.height = 20;
+                this.sizeX = this.width;
+                this.sizeY = this.height;
                 //this.mass = 10;
                 this.addSlot(1, 0, 0);
                 this.addConnection(2, 0, -10, Math.PI);

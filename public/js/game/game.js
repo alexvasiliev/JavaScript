@@ -58,6 +58,7 @@ window.requestAnimFrame = (function() {
 
             this.addPlayer();
             this.addStars();
+            this.shop = new Shop();
 
             this.x = 0;
             this.y = 0;
@@ -128,10 +129,6 @@ window.requestAnimFrame = (function() {
             this.drawer = new Drawer();
             drawer = this.drawer;
 
-            
-
-            this.shop = new Shop();
-            shop = this.shop;
 
             this.listenToKeyboard();
 
@@ -163,6 +160,7 @@ window.requestAnimFrame = (function() {
                 if(this.spacePressed == false){
                     if(this.pause == false){
                         this.pause = true;
+                        
                     }else{
                         this.pause = false;
                     }
@@ -280,6 +278,12 @@ window.requestAnimFrame = (function() {
         drawAll : function () {
             for (var i = 0; i < this.spriteContainers.length; i++)
             {
+                /*if(i == 0){
+                    console.log(this.spriteContainers[i]);
+                    console.log(this.spriteContainers[i].sprite.width);
+                    console.log(this.spriteContainers[i].owner);
+                    console.log(this.spriteContainers[i].owner.width);
+                }*/
                 this.spriteContainers[i].check();
                 if(this.spriteContainers[i].todelete == true){
                     delete(this.spriteContainers[i]);
@@ -319,8 +323,8 @@ window.requestAnimFrame = (function() {
             renderer.shipView.offset.y = 10000;*/
             //*/
 
-            renderer.shipView.render(renderer.world);
-            renderer.shopView.render(renderer.world);
+            //renderer.shipView.render(renderer.world);
+            renderer.shopView.render(renderer.gui);
         },
         checkBroders : function () {
             this.x += this.vx;
@@ -352,15 +356,15 @@ window.requestAnimFrame = (function() {
             var game = this;
             if(this.ready == true){
                 if(this.newGame == true){
-                    console.log("init");
+                    //console.log("init");
                     this.initNew();
                 }
-                console.log("game");
+                //console.log("game");
                 game.update();
             }else{
-                console.log("not loaded yet");
+                //console.log("not loaded yet");
                 if(resourses.loaded == true){
-                    console.log("ready");
+                    //console.log("ready");
                     this.ready = true;
                 }
             }

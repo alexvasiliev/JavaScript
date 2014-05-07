@@ -7,21 +7,32 @@ define([
 ){
     var BaseObject = Class.$extend ( {
 
-        __init__: function (Image){
+        __init__: function (Image, stage){
             this.x = 0;
             this.y = 0;
+            this.angle = 0;
+
             this.width = 0;
             this.height = 0;
-            this.angle = 0;
-            this.img = Image;
-            this.todelete = false;
             this.alpha = 1;
+
+            this.sizeX = 0;
+            this.sizeY = 0;
+
+            this.img = Image;
+
+            this.todelete = false;
+
             if(Image != null){
-                game.addSpriteController(new SpriteController(this, Image.src));
+                if(!stage){
+                    stage = "world";
+                }
+                game.addSpriteController(new SpriteController(stage, this, Image.src));
             }
         },
 
         turn : function () {
+
         },
 
         draw : function () {

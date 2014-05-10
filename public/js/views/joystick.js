@@ -106,7 +106,7 @@ define([
             //$(this.className).trigger('show');
         },
         hide: function () {
-            //this.container.style.display = 'none';
+            this.container.style.display = 'none';
         }
 
     });

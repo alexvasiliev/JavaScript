@@ -22,7 +22,12 @@ define([
 			this.container.id = this.viewName;
 			this.container.style.display = "none";
 			document.body.appendChild(this.container);
-			this.render();
+			if (this.checkSupport()) {
+				this.render();
+			} else {
+				this.renderSupportError();
+			}
+			
         },
 		postRenderInitialize: function () {
 			$(document).on('game::over', function(event, s){console.log(event); console.log(s); gameover.show(s);});
@@ -37,10 +42,6 @@ define([
         },
         show: function () {
             console.log("game::show");
-			if (!this.checkSupport()) {
-				this.renderSupportError();
-				return;
-			}
 			this.container.style.display = "block";
 			this.trigger("view::show");
 			this.game = Game();

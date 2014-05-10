@@ -1,7 +1,0 @@
-@import "_global";
-
-@import "_game";
-@import "_gameover";
-@import "_mainmenu";
-@import "_scoreboard";
-

@@ -2,11 +2,13 @@ define([
     'backbone',
     'tmpl/game',
 	'views/gameover',
+	'modernizr',
 	'game/game'
 ], function(
     Backbone,
     tmpl,
 	gameover,
+	Modernizr,
 	Game
 ){
 
@@ -29,8 +31,16 @@ define([
 			$('#'+this.viewName).html(this.template());
 			this.postRenderInitialize();
         },
+		renderSupportError: function () {
+			$('#'+this.viewName).html("Sorry, your browser not supported :(");
+			this.postRenderInitialize();
+        },
         show: function () {
             console.log("game::show");
+			if (!this.checkSupport()) {
+				this.renderSupportError();
+				return;
+			}
 			this.container.style.display = "block";
 			this.trigger("view::show");
 			this.game = Game();
@@ -38,7 +48,12 @@ define([
         hide: function () {
             console.log("game::hide");
 			this.container.style.display = "none";
-        }
+        },
+		checkSupport: function() {
+			console.log("Checking browser support");
+			return ((Modernizr.canvas && Modernizr.canvastext) || Modernizr.webgl)  && Modernizr.localstorage;
+		}
+		
     });
 
     return new GameView();

@@ -8,6 +8,7 @@ require.config({
 		classy :"lib/classy",
         Connector: "lib/Connector",
         FnQuery: "lib/FnQuery",
+		modernizr: "lib/modernizr_custom",
         "socket.io": "/socket.io/socket.io"
     },
     shim: {
@@ -20,6 +21,9 @@ require.config({
         },
         "socket.io": {
             exports: "io"
+        },
+		"modernizr": {
+            exports: 'Modernizr'
         }
     }
 });

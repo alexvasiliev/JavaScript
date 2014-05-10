@@ -29,10 +29,8 @@ define([
 
         initialize: function () {
 			this.container.id = this.viewName;
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display = "none";
 			document.body.appendChild(this.container);
-			$('body').on('gameover::scores::send::fail', this.sendError);
-			$('body').on('gameover::scores::redirrect',  this.redirrectToScoreboard);
 			this.render();
         },
         render: function () {
@@ -42,15 +40,14 @@ define([
         show: function (s) {
             console.log("gameover::show");
 			this.prepareResults(s);
-			this.container.setAttribute('style', 'display:visible');
+			this.container.style.display = "block";
 			this.trigger("view::show");
         },
         hide: function () {
             console.log("gameover::hide");
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display = "none";
         },
 		prepareResults : function(s) {
-			//var rndScore = Math.ceil(Math.random()*10E7);
 			document.getElementById('score-holder').innerHTML = s;
 			document.getElementById('player_score').setAttribute('value', s);			
 		},
@@ -60,23 +57,25 @@ define([
 				score: form.player_score.value,
 				name : form.player_name.value.toString(),				
 			});
-			
-			collectionScore.addScore(playerScore);
-			disableForm();
-			//var key = (new Date()).getTime();			
-			//localStorage[key] = JSON.stringify(playerScore);
-			collectionScore.sendScore(playerScore);
-			enableForm();
+				
+			collectionScore.sendScore(playerScore, {
+				before: function(event) {
+					collectionScore.addScore(playerScore);
+					disableForm();	
+				},			
+				success: function(event) {
+						window.location.href = "/#scoreboard";
+						collectionScore.fetch({reset : true});
+					    enableForm()
+						// this.redirrectHndl() -> Not a function WTF?
+				},
+				fail: function(event) {
+					enableForm();
+					alert('Ошибка отправки данных.\n Ваши данные сохранены локально');			
+				}
+			});
 			return false;	/*false - не отправит форму вдогонку стандартным образом*/
-		},
-		sendError : function() {
-			alert('HTTP 400. Ошибка данных');
-		},
-		redirrectToScoreboard : function() {
-			window.location.href = "/#scoreboard";
-			collectionScore.fetch({reset : true});
-		},		
-		
+		}	
     });
 
     return new GameOverView();

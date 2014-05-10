@@ -10,65 +10,86 @@ define([
     	model: score,
 		url  : '/scores',
 		urlc : '/scores?limit=',
+		lsObj: 'savedScores',
 
     	comparator: function(player) {
-    		return - player.get('score');
+    		return -player.get('score');
     	},
-		getScores: function(count){
-			if(!count) count = 10;
-			var result = null;
-			
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function (e) {					
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-						result = JSON.parse(xhr.response);
-                    }
-					else $('body').trigger("collection::get::fail");
-                }
-            };
-			xhr.open("GET", "/scores?limit="+count, false);
-			xhr.send( null );
-			return result;
+		getScores: function(count, callbacks){
+			var context = this;
+            $.ajax({
+				type: 'GET',
+				url: '/scores',
+				data: { limit: count },
+				dataType: 'json',
+				success: function(data) {
+					console.log("GET scores SUCCESS");
+					callbacks.success(data);
+				},
+				error: function() {
+					callbacks.fail();
+				}
+			});
 		},
 		addScore : function(playerScore) {
 			this.add(playerScore);		
 		},		
-		sendScore : function(playerScore, useLS){
+		sendScore : function(playerScore, callbacks) {	
+			var score = {
+				score : playerScore.get('score'),
+				name  : playerScore.get('name')
+			};
+			var context = this;
+            $.ajax({
+				type: 'POST',
+				url: '/scores',
+				data: score,
+				dataType: 'json',
+				beforeSend: function() {
+					context.resendFromLocalStorage();
+					callbacks.before();
+				},
+				success: function() {
+					callbacks.success();
+				},
+				error: function() {
+					this.saveToLocalStorage(score);
+					callbacks.fail();
+				}
+            });
+		},
+		saveToLocalStorage: function(score) {
+			if (!localStorage[this.lsObj]) {
+				localStorage.setItem(this.lsObj, JSON.stringify({}));
+			}
+			var key = (new Date()).getTime();
+			var storage = JSON.parse(localStorage[this.lsObj]);
 			
-			useLS = useLS || true;
-			
-			var formData = new FormData();
-			formData.append('score', playerScore.get('score'));
-			formData.append('name',  playerScore.get('name'));
-			
-			var xhr = new XMLHttpRequest();
-			var res = false;
-			xhr.onreadystatechange = function (e) {					
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-						res = true;
-						if(useLS) {
-							$('body').trigger("gameover::scores::redirrect");
-						}
-                    } else if (xhr.status === 400) {
-						res = true; /*данные дошли успешно, хотя они и ошибочны */
-                        console.log(xhr.responseText);
-						$('body').trigger("gameover::scores::send::fail");
-                    } else if (useLS && ((xhr.status >= 500) || (xhr.status === 0))) {
-						var key = (new Date()).getTime();			
-						localStorage[key] = JSON.stringify(playerScore);
-                    }
-					else {
-						alert('smth deeply wrong');
+			storage[key] = score;
+			localStorage.setItem(this.lsObj, JSON.stringify(storage));
+		},
+		resendFromLocalStorage: function() {
+			if (localStorage[this.lsObj]) {
+				var storage = JSON.parse(localStorage[this.lsObj]);
+				function deleteItem(key) {
+					delete storage[key];
+				};
+				if (storage) {
+					for (var key in storage) {
+						console.log("attempt to resend:" + storage[key]);
+						$.ajax({
+							type: 'POST',
+							url: '/scores',
+							data: storage[key],
+							dataType: 'json',
+							success: deleteItem(key)
+						});
 					}
-                }
-            };
-        
-			xhr.open("POST", "/scores", true);
-			xhr.send( formData );
-			return res;
+					localStorage.setItem(this.lsObj, JSON.stringify(storage));
+				}
+			}
 		}
+		
     });
 
 	return new Collection();

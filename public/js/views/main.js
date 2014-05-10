@@ -14,7 +14,7 @@ define([
 
         initialize: function () {
 			this.container.id = this.viewName;
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display = "none";
 			document.body.appendChild(this.container);
 			this.render();
         },
@@ -23,12 +23,12 @@ define([
         },
         show: function () {
             console.log("main::show");
-			this.container.setAttribute('style', 'display:visible');
+			this.container.style.display = "block";
 			this.trigger("view::show");
         },
         hide: function () {
             console.log("main::hide");
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display = "none";
         }
 
     });

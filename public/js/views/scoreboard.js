@@ -18,44 +18,45 @@ define([
 
         initialize: function () {
 			this.container.id = this.viewName;
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display = 'none';
 			document.body.appendChild(this.container);
 			
-			$('body').on('collection::get::fail', this.getError);
-			
-			var context = this;
-			
+			var context = this;			
             collection.on("reset",function(){
-                $('#'+context.viewName).html(context.template(collection.getScores(10)));
-            });	
-			collection.on("add",function(){
-                $('#'+context.viewName).html(context.template(collection.getScores(10)));
+                context.fillTable(collection.toJSON());
             });	
 			this.render();
+			collection.resendFromLocalStorage();
         },
         render: function () {
-			$('#'+this.viewName).html(this.template(collection.getScores(10)));
+			var context = this;
+			collection.getScores(10, {
+				success: function(data) {
+					context.fillTable(data);
+				},
+				fail: function(data) {
+					context.getError();
+				}
+			});	
         },
         show: function () {
-			for(var key in localStorage) {
-				alert("" +key +"  " + localStorage[key] + "\n");
-				var score = new Score(JSON.parse(localStorage[key]));
-				var succ = collection.sendScore(score, false);
-				//localStorage.removeItem(key); TODO: legit?!
-			}	
-			
+			this.container.style.display="block";
 			document.getElementById('score_table-wrapper').innerHTML = '<img src="img/loading.gif"></img>'
-			collection.fetch({reset : true});
-	
-			this.container.setAttribute('style', 'display:visible');
+			collection.fetch({reset : true, data: {limit: 10}});		
 			this.trigger("view::show");
         },
         hide: function () {
 			console.log("scoreboard::hide");
-			this.container.setAttribute('style', 'display:none');
+			this.container.style.display="none";
         },
 		getError : function() {
 			alert("ошибка загрузки данных с сервера");
+		},
+		fillTable: function(data) {
+			console.log("filling Table");
+			console.log(data);
+			var context = this;
+			$('#'+context.viewName).html(context.template(data));
 		}
 
     });

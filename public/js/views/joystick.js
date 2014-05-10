@@ -1,10 +1,12 @@
 define([
     'backbone',
     'tmpl/joystick',
+	'modernizr',
     'jquery',
 ], function(
     Backbone,
     tmpl,
+	Modernizr,
     $
 ){
     var alpha, beta, gamma, i = 0;
@@ -18,8 +20,15 @@ define([
             this.container.id = this.viewName;
             this.container.style.display = 'none';
             document.body.appendChild(this.container);
-            this.render();
+			if( this.checkDevice()) {
+            	this.render();
+			} else {
+				this.renderError();
+			}
         },
+		renderError: function () {
+            $('#'+this.viewName).html("Sory, your device can not be used as joystick.");
+		},
         render: function () {
             console.log("renderJoy");
                 $('#'+this.viewName).html(this.template());
@@ -107,8 +116,10 @@ define([
         },
         hide: function () {
             this.container.style.display = 'none';
-        }
-
+        },
+		checkDevice: function() {
+			return Modernizr.touch && Modernizr.devicemotion && Modernizr.deviceorientation;
+		}
     });
 
     return new View();

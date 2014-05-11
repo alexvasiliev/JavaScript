@@ -89,18 +89,15 @@ define([
 	};
 
 	init();
-
 	// Обмен сообщениями
 	server.on('message', function(data, answer){
-		console.log('message', data);
-		answer('answer');
+		console.log('message');
+		//console.log('message', data);
+		//answer('answer');
 	});
 
 	window.server = server;
 
-	
-	server.send('message', function(answer){
-		console.log(answer);
-	});
+
 	
 });

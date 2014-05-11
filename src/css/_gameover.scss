@@ -20,13 +20,13 @@
 	@extend %base_big_black_box;
 	margin: 20px auto;
 	
-	&__score{
+	__score{
 		font-size: 20px;
 		font-family: Helvetica;
 		font-weight: bold;
 	}
 	
-	&__text{
+	__text{
 		@extend %base_gameoverscreen__form__input;
 		border: 1px solid #cccccc; 		 
 		background: #ffffff !important; /*желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым*/
@@ -41,7 +41,7 @@
 		}
 	}
 	
-	&__submit{
+	__submit{
 		@extend %base_gameoverscreen__form__input;
 		
 		background-color: rgba(0,0,0,1);

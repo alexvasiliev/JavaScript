@@ -3,22 +3,29 @@ define([
     'tmpl/game',
 	'views/gameover',
 	'modernizr',
-	'game/game'
+	'game/game',
+    'tmpl/console'
 ], function(
     Backbone,
     tmpl,
 	gameover,
 	Modernizr,
-	Game
+	Game,
+    consol
 ){
 
     var GameView = Backbone.View.extend({
 
         template: tmpl,
+        con:consol,
 		viewName: 'GameScreenView',
 		container: document.createElement("div"),
 
-        initialize: function () {
+        initialize: function () { 
+        	$(this.className).html(this.con());
+            require(['console'], function (console) {
+                
+            });
 			this.container.id = this.viewName;
 			this.container.style.display = "none";
 			document.body.appendChild(this.container);

@@ -15,14 +15,14 @@
 	border : 1px solid black;
 	margin:0 auto;
 
-	&__cell{
+	__cell{
 		border : 1px solid black;
 		font-size : 25pt;
 		font-family : Helvetica;
 		text-align : center;
 		width : 300px;
 
-		&-head {
+		-head {
 			@extend .scoreboard__table__cell;
 			margin : 0px;
 			background-color : black;

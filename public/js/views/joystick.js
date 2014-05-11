@@ -30,8 +30,7 @@ define([
             $('#'+this.viewName).html("Sory, your device can not be used as joystick.");
 		},
         render: function () {
-            console.log("renderJoy");
-                $('#'+this.viewName).html(this.template());
+                $(this.className).html(this.template());
                 $("#helpMsg").hide();
                 $("#helpMsg").css("opacity", 0.5)
                 $("#helpMsg").css("font-size" , "30px");
@@ -45,7 +44,6 @@ define([
                 $(this.className).on("start",function(){
                     $("#helpMsg").show();
                     $("#connectForm").hide();
-                    console.log("event");
                     document.addEventListener('click', function(){
                         window.server.send("3 ", function(){});
                     });
@@ -63,14 +61,12 @@ define([
                 */
                 window.addEventListener('devicemotion',function(event){
                     var div = document.getElementById('joystick');
-                    
                     //div.innerHTML = event.acceleration.x + " " +event.acceleration.y + " " +event.acceleration.z;
                     window.server.send("2 1 " + Math.abs(event.acceleration.x))
                     window.server.send("2 2 " + Math.abs(event.acceleration.y))
 
                 });
                 window.addEventListener('deviceorientation', function(event){
-
                     var div = document.getElementById('joystick');
                         if (i==0){
                             alpha = event.alpha;

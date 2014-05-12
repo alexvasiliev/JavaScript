@@ -21,10 +21,7 @@ define([
         },
         check : function(){
             if(this.owner == null || this.owner.todelete == true){
-                this.todelete = true;
-                renderer[this.stage].removeChild(this.sprite);
-                //console.log(this.owner.todelete + ", " + this.todelete);
-                return;
+                this.kill();
             }
             this.sprite.width = this.owner.width;
             this.sprite.height = this.owner.height;
@@ -33,7 +30,12 @@ define([
             this.sprite.alpha = this.owner.alpha;
             this.sprite.rotation = this.owner.angle;
 
-        }
+        },
+        kill : function (){
+                this.todelete = true;
+                renderer[this.stage].removeChild(this.sprite);
+                return;
+        },
 
     });
     return SpriteController;

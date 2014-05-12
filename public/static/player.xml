@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<ship>
+	<bodyId>1</bodyId>
+	<module>
+		<id>1</id>
+		<width>3</width>
+		<height>5</height>
+		<tip>false</tip>
+		<connection>
+			<id>1</id>
+			<targetId>0</targetId>
+			<x>2</x>
+			<y>0</y>
+			<size>1</size>
+		</connection>
+	</module>
+	<module>
+		<id>2</id>
+		<width>2</width>
+		<height>3</height>
+		<tip>false</tip>
+		<connection>
+			<id>2</id>
+			<targetId>1</targetId>
+			<x>0</x>
+			<y>1</y>
+			<size>1</size>
+		</connection>
+	</module>
+</ship>

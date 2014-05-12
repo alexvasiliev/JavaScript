@@ -47,12 +47,12 @@ define([
             document.getElementById("GameScreenView").appendChild(this.mainView.view);
             //document.getElementById("GameScreenView").appendChild(this.shipView.view);
             document.getElementById("GameScreenView").appendChild(this.shopView.view);
-            this.mainView.view.style.position = "absolute";
+            /*this.mainView.view.style.position = "absolute";
             this.mainView.view.style.top = "0px";
             this.mainView.view.style.left = "0px";
             this.shopView.view.style.position = "absolute";
             this.shopView.view.style.top = "0px";
-            this.shopView.view.style.left = "0px";
+            this.shopView.view.style.left = "0px";*/
         },
         setSceneSize : function (x, y){
 

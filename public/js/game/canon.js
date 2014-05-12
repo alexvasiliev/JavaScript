@@ -1,13 +1,13 @@
 define([
     'classy',
-    'game/bindedobject',
+    'game/baseobject',
     'game/shot'
 ], function (
     Class,
-    BindedObject,
+    BaseObject,
     Shot
 ){
-    var Canon = BindedObject.$extend ( {
+    var Canon = BaseObject.$extend ( {
         __init__ : function(baseClass, secondClass, size) {
             this.size = size;
             var baseImg = resourses["ship_canon_body"+baseClass];
@@ -15,8 +15,8 @@ define([
             var scale = 0.3;
 
             var gunImg = resourses["ship_canon_gun"+secondClass];
-            this.gun = new BindedObject(gunImg);
-            this.gun.bind = this;
+            this.gun = new BaseObject(gunImg);
+            this.gun.lock(this);
 
             console.log("Canon "+baseImg+", "+gunImg);
 

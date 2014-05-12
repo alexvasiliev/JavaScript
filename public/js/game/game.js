@@ -11,7 +11,8 @@ define([
     'game/resourses',
     'game/shop',
     'pixi',
-    'game/drawer'
+    'game/drawer',
+    'game/builder'
 ], function (
     Class,
     Engine,
@@ -25,7 +26,8 @@ define([
     Resourses,
     Shop,
     Pixi,
-    Drawer
+    Drawer,
+    Builder
 ){
 window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -34,10 +36,17 @@ window.requestAnimFrame = (function() {
     };
 })();
     var Game = Class.$extend ( {
-        clearArray:function(array){
+        clearArray : function(array){
             for (var i = 0; i < array.length;) {
                 delete(array[i]);
                 array.splice(i, 1);
+            };
+        },
+        clearSprites : function(){
+            for (var i = 0; i < this.spriteContainers.length;) {
+                this.spriteContainers[i].kill();
+                delete(this.spriteContainers[i]);
+                this.spriteContainers.splice(i, 1);
             };
         },
         clearAll:function(){
@@ -46,7 +55,7 @@ window.requestAnimFrame = (function() {
             this.clearArray(this.background);
             this.clearArray(this.objects);
             this.clearArray(this.pilots);
-            this.clearArray(this.spriteContainers);
+            this.clearSprites();
         },
 
         startNew : function (){
@@ -85,7 +94,7 @@ window.requestAnimFrame = (function() {
         addSpriteController : function (target){
             this.spriteContainers.push(target);
         },
-        testXMLParser : function (){
+        /*testXMLParser : function (){
             xml = resourses.getXMLDocument('static/test.xml');
 
             var ships = xml.getElementsByTagName("ship");
@@ -103,7 +112,7 @@ window.requestAnimFrame = (function() {
                 }
                // операции над текущим элементом town  
             }
-        },
+        },*/
 
         __init__: function (){
             this.ready = false;
@@ -125,9 +134,13 @@ window.requestAnimFrame = (function() {
 
             this.resourses = new Resourses();
             resourses = this.resourses;
+            console.log(resourses);
 
             this.drawer = new Drawer();
             drawer = this.drawer;
+
+            this.builder = new Builder();
+            builder = this.builder;
 
 
             this.listenToKeyboard();
@@ -142,7 +155,7 @@ window.requestAnimFrame = (function() {
             this.spacePressed = false;
 
 
-            this.testXMLParser();
+            this.checkWarpDrive();
             this.animloop();
         },
         listenToKeyboard : function () {
@@ -160,7 +173,7 @@ window.requestAnimFrame = (function() {
                 if(this.spacePressed == false){
                     if(this.pause == false){
                         this.pause = true;
-                        
+
                     }else{
                         this.pause = false;
                     }
@@ -170,13 +183,30 @@ window.requestAnimFrame = (function() {
                 this.spacePressed = false;
             }
         },
+        checkWarpDrive : function () {
+            /*var count = 10;
+            var displacementTexture = Pixi.Texture.fromImage(resourses.ship_body_destroyed0.src);
+            var displacementFilter = new Pixi.DisplacementFilter(displacementTexture);
+            displacementFilter.scale.x = 50;
+            displacementFilter.scale.y = 50;
+            displacementFilter.offset.x += 10;//blurAmount * 40;
+            displacementFilter.offset.y += 10;
+            renderer.world.filters = [displacementFilter];*/
+
+    /*var displacementFolder = gui.addFolder('Displacement');
+    displacementFolder.add(filtersSwitchs, '0').name("apply");
+    displacementFolder.add(displacementFilter.scale, 'x', 1, 200).name("scaleX");
+    displacementFolder.add(displacementFilter.scale, 'y', 1, 200).name("scaleY");*/
+        },
         addStars : function () {
             for(var i = 0; i < 10; i++){
                 var newStar = new StaticDepthObject("star", 1);
             }
         },
         addPlayer : function () {
-            this.playerShip = new Ship(1, 1);
+            builder.ship.fromXML("player");
+            this.playerShip = builder.ship.getShip();
+            /*this.playerShip = new Ship(1, 1);
             this.playerShip.x = renderer.sceneWidth/2;
             this.playerShip.y = renderer.sceneHeight/2;
             this.playerShip.velocity = 0.07;
@@ -199,11 +229,11 @@ window.requestAnimFrame = (function() {
             var plasmaCanon = new Canon( 2, 1, 1);
             this.playerShip.attachItem(plasmaCanon, "canon", module.slots[0], module);
             var plasmaCanon2 = new Canon( 2, 2, 1);
-            this.playerShip.attachItem(plasmaCanon2, "canon", module2.slots[0], module2);
+            this.playerShip.attachItem(plasmaCanon2, "canon", module2.slots[0], module2);*/
             //console.log(plasmaCanon + ", " +"canon" + ", " + module.slots[0] + ", " +module);
             //this.playerShip.trace();
 
-            var enemyShip = new Ship(1, 1);
+            /*var enemyShip = new Ship(1, 1);
             enemyShip.x = renderer.sceneWidth/2+100;
             enemyShip.y = renderer.sceneHeight/2;
             enemyShip.velocity = 0.07;
@@ -211,7 +241,7 @@ window.requestAnimFrame = (function() {
             this.ships.push(enemyShip);
 
             enemyPilot = new Pilot(enemyShip, 0);
-            this.pilots.push(enemyPilot);
+            this.pilots.push(enemyPilot);*/
             /*plasmaCanon = new Canon( 1, 2, 1);
             //console.log("123");
             enemyShip.attachItem(plasmaCanon, "canon", enemyShip.body.slots[0], enemyShip.body);
@@ -276,6 +306,8 @@ window.requestAnimFrame = (function() {
             renderer.drawText(this.score, 20, 50, 15, 20, "#FFF");
         },
         drawAll : function () {
+            
+            this.checkWarpDrive();
             for (var i = 0; i < this.spriteContainers.length; i++)
             {
                 /*if(i == 0){

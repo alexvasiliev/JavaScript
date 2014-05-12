@@ -1,41 +1,60 @@
 define([
     'classy',
-    'game/bindedobject',
+    'game/baseobject',
     'game/sprite',
     'game/connection',
     'game/slot'
 ], function (
     Class,
-    BindedObject,
+    BaseObject,
     Sprite,
     Connection,
     Slot
 ){
-    var Module = BindedObject.$extend ( {
-        __init__ : function(type, number) {
+    var Module = BaseObject.$extend ( {
+        __init__ : function() {
+
+            this.burnPeriod = 3;
+            /////////
+            this.$super();
             this.energyCapacity = 0;
             this.energyGeneration = 0;
             this.energy = 0;
-            this.energyBalance = 0;
 
-            this.curHealth = 0;
             this.maxHealth = 0;
+
+            this.connections = [];
+            this.slots = [];
+
+            //////////
+            this.energyBalance = 0;
+            this.curHealth = 0;
+
+            this.todelete = false;
+            this.destroyed = false;
+
+            this.burnTimer = 0;
+            this.oldX = 0;
+            this.oldY = 0;
+
+            //////////
 
             this.mainImage = null;
             this.secondryImage = null;
 
-            if(type == 0 || type == "hull"){
+            /*if(type == 0 || type == "hull"){
                 this.mainImage = resourses["ship_body"+type];
                 this.secondryImage = resourses["ship_body_destroyed"+type];
+            drawer.newDrawing(1, 3);
             }else if(type == 1 || type == "module"){
                 this.mainImage = resourses["ship_module"+type];
                 this.secondryImage = resourses["ship_module_destroyed"+type];
+            drawer.newDrawing(1, 1);
             }
 
-            drawer.newDrawing(200, 200);
-            drawer.drawBase(resourses.ship_module0, 150, 150, 20, 20);
+            drawer.setBaseMaterial("steel");
+            drawer.drawBase(false);
 
-            this.$super(drawer.getImage());
 
             //this.cracks = [];
             this.item = null;
@@ -74,15 +93,7 @@ define([
                 this.addConnection(1, 0, 10, 0);
                 this.addConnection(1, -10, 0, Math.PI/2);
                 this.addConnection(1, 10, 0, -Math.PI/2);
-            }
-            this.curHealth = this.maxHealth;
-            this.todelete = false;
-            this.destroyed = false;
-
-            this.burnTimer = 0;
-            this.burnPeriod = 3;
-            this.oldX = 0;
-            this.oldY = 0;
+            }*/
         },
         tradeEnergy : function () {
             this.energy += this.energyGeneration;
@@ -110,8 +121,6 @@ define([
                 this.energyBalance = 2;
                 this.burnPeriod += 0.001;
             }
-            this.oldX = this.x;
-            this.oldY = this.y;
             this.$super();
             
             for (var i = 0; i < this.connections.length;i++){
@@ -132,7 +141,7 @@ define([
                 this.cracks[i].turn();
             };*/
         },
-        addSlot : function (size, x, y) {
+        /*addSlot : function (size, x, y) {
             var newSlot = new Slot (size, x, y);
             this.slots.push(newSlot);
             //console.log(this.slots);
@@ -140,12 +149,9 @@ define([
         addConnection : function (size, x, y, angle) {
             var newConnection = new Connection (size, x, y, angle);
             this.connections.push(newConnection);
-        },
-        draw : function () {
+        },*/
+        /*draw : function () {
             this.$super();
-            /*for (var i = this.cracks.length - 1; i >= 0; i--) {
-                this.cracks[i].draw();
-            };*/
             for (var i = 0; i < this.connections.length;i++){
                 if(this.connections[i].status == "connector"){
                     this.connections[i].target.draw();
@@ -156,7 +162,7 @@ define([
                     this.slots[i].target.draw();
                 }
             }
-        },
+        },*/
         clear : function () {
             /*for (var i = this.cracks.length - 1; i >= 0; i--) {
                 delete(this.cracks[i]);
@@ -202,11 +208,9 @@ define([
                 var minSize = Math.min(this.height, this.width)/2;
                 flame.x = this.x + (0.5 - Math.random()) * minSize;
                 flame.y = this.y + (0.5 - Math.random()) * minSize;
-                var dx = this.x - this.oldX;
-                var dy = this.y - this.oldY;
-                this.totalSpeed = Math.sqrt(dx*dx + dy*dy);
-                this.moveAngle = Math.atan(dy/dx) + Math.PI/2;
-                if(dx > 0){
+                this.totalSpeed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+                this.moveAngle = Math.atan(this.vy/this.vx) + Math.PI/2;
+                if(this.vx > 0){
                     this.moveAngle += Math.PI;
                 }
                 flame.angle = this.moveAngle;

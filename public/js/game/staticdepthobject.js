@@ -14,6 +14,9 @@ define([
             if(type == 2 || type == "glow"){
                 img = resourses["background_star"+number];
             }
+
+            console.log(type, number);
+            console.log(img);
             this.$super(img);
 
 
@@ -40,9 +43,6 @@ define([
         },
         turn : function () {
             
-        },
-        draw : function () {
-            this.$super(Image);
         },
     });
     return StaticDepthObject;

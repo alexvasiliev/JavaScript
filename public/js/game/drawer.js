@@ -8,40 +8,157 @@ define([
     Pixi
 ){
     var Drawer = Class.$extend ( {
-
-/*var buffer = document.createElement('canvas');
-buffer.width  = 50;
-buffer.height = 50;
-
-var ctxBuffer=buffer.getContext("2d");
-ctxBuffer.fillStyle="black";
-ctxBuffer.fillRect(0,0,50,50);
-ctxBuffer.fillStyle="yellow";
-ctxBuffer.fillRect(10,10,30,30);
-
-var newImg = new Image();
-newImg.src = buffer.toDataURL();
-ctx.drawImage(newImg, 50, 50, 20, 20);*/
         __init__: function (){
+            this.angleSize = 5;
+            this.cellSize = 25;
+            this.slotSize = 15;
+            ///////////////
             this.canvas = document.createElement('canvas');
-            //document.body.appendChild(this.canvas);
-            //this.pixiRenderer = Pixi.autoDetectRenderer(100, 100, this.canvas, false);
+            document.body.appendChild(this.canvas); ;
+            //this.canvas.style.border = "1px solid #d3d3d3;";
+            this.canvas.style = "border:1px solid #d3d3d3;";
             this.renderer = this.canvas.getContext("2d");
+
+            this.width = null;
+            this.height = null;
+
+            this.materialName = null;
+            this.materialSquere = null;
+            this.materialTriangle = null;
+
+            this.connectorName = null;
+            this.connectorEnd = null;
+            this.connectorSlot = null;
+            this.connectorLine = null;
+            this.connectorConnection = null;
+
+            this.map = null;
+
+            this.mapRows = null;
+            this.mapColomns = null;
+
+            this.cellWidth = null;
+            this.cellHeight = null;
+
         },
         newDrawing : function(width, height){
-            this.canvas.width  = width;
-            this.canvas.height = height;
-            this.renderer.fillStyle = "black";
-            this.renderer.fillRect(0, 0, width, height);
-            //this.pixiRenderer.render(new Pixi.Stage(0x000000));
+            this.width  = width*this.cellSize;
+            this.height = height*this.cellSize
+            ;
+            this.canvas.width  = this.width;
+            this.canvas.height = this.height;
 
+            this.material = null;
+            this.materialName = null;
+
+            this.map = null;
+
+            this.mapRows = null;
+            this.mapColomns = null;
+
+            this.cellWidth = null;
+            this.cellHeight = null;
+        },
+        setBaseMaterial : function (material){
+            this.materialName = "material_" + material;
+            this.materialSquere = resourses[this.materialName + "_squere"];
+            this.materialTriangle = resourses[this.materialName + "_triangle"];
+        },
+        setConnectorMaterial : function (){
+            this.connectorName = "module_connection";
+            this.connectorEnd = resourses[this.materialName + "_end"];
+            this.connectorSlot = resourses[this.materialName + "_node_center"];
+            this.connectorLine = resourses[this.materialName + "_line"];
+            this.connectorConnection = resourses[this.materialName + "_connector"];
+        },
+        drawBase : function(tip){
+            if(tip){
+                return;
+            }
+            else{
+                this.map = this.createMap(this.width/this.cellSize, this.height/this.cellSize);
+
+                this.drawRectangle(this.width - 2*this.angleSize, this.height - 2*this.angleSize, 
+                    this.angleSize, this.angleSize);//center
+
+                this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
+                    0, this.angleSize);//left line
+                this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
+                    this.width - this.angleSize, this.angleSize);//right linr
+                this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
+                    this.angleSize, 0);//top line
+                this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
+                    this.angleSize, this.height - this.angleSize);//bottom line
+
+                this.drawTriangle(this.angleSize, this.angleSize, 
+                    this.width - this.angleSize, 0, 
+                    0);//top right triangle
+                this.drawTriangle(this.angleSize, this.angleSize, 
+                    this.width - this.angleSize, this.height - this.angleSize, 
+                    Math.PI/2);//bottom right triangle
+                this.drawTriangle(this.angleSize, this.angleSize, 
+                    0, this.height - this.angleSize, 
+                    Math.PI);//bottom left triangle
+                this.drawTriangle(this.angleSize, this.angleSize, 
+                    0, 0, 
+                    -Math.PI/2);//top right triangle
+            }
+        },
+        createMap : function(width, height){
+            var arr = new Array();
+            var i = 0;
+            var j = 0;
+            for(i = 0; i < width; i++){
+                arr[i] = new Array();
+                for(j = 0; j < height; j++){
+                    arr[i][j] = null;
+                }
+            }
+            this.mapRows = j;
+            this.mapColomns = i;
+            this.cellWidth = width / this.mapRows;
+            this.cellHeight = height / this.mapColomns;
+            //console.log(this.mapRows + ", " + this.mapColomns);
+            return arr;
+        },
+        attachCenter : function(){
+            var centerRow = Math.round(this.mapRows/2);
+            var centerColomn = Math.round(this.mapColomns/2);
+            addSlot(centerRow, centerColomn);
 
         },
-        drawBase : function(material, width, height, x, y){
-            //this.renderer.drawImage(material, x, y, width, height);
-            var imgWidth = material.naturalWidth;
-            var imgHeight = material.naturalHeight;
-            console.log(imgWidth + ", " + imgHeight + ", " + width + ", " + height );
+        addSlot : function(cellx, celly){
+            this.map[cellx][celly] = 1;
+            drawSlot(this.slotSize, this.slotSize, 
+                cellx * this.cellWidth, celly * this.cellHeight, 0);
+        },
+        drawSlot : function(width, height, x, y, angle){
+            x += this.width/2;
+            y += this.height/2;
+            //console.log(width + ", " + height + ", " + x + ", " + y + ", " + angle );
+            this.renderer.translate(x, y);
+            this.renderer.rotate(angle);
+            this.renderer.drawImage(this.materialTriangle, -width/2, -height/2, width, height);
+            this.renderer.rotate(-angle);
+            this.renderer.translate(-x, -y);
+        },
+        drawTriangle : function(width, height, x, y, angle){
+            x += this.width/2;
+            y += this.height/2;
+            //console.log(width + ", " + height + ", " + x + ", " + y + ", " + angle );
+            this.renderer.translate(x, y);
+            this.renderer.rotate(angle);
+            this.renderer.drawImage(this.materialTriangle, -width/2, -height/2, width, height);
+            this.renderer.rotate(-angle);
+            this.renderer.translate(-x, -y);
+        },
+        drawRectangle : function(width, height, x, y){
+            if(this.materialSquere == null){
+                return;
+            }
+            var imgWidth = this.materialSquere.naturalWidth;
+            var imgHeight = this.materialSquere.naturalHeight;
+            //console.log(imgWidth + ", " + imgHeight + ", " + width + ", " + height );
             var i = 0;
             var j = 0;
             if(imgWidth > 0 && imgHeight > 0 && width > 0 && height > 0){
@@ -49,20 +166,23 @@ ctx.drawImage(newImg, 50, 50, 20, 20);*/
                     for(j = 0; j < height; j += imgHeight){
                         var imageWidth = Math.min(width - i, imgWidth);
                         var imageHeight = Math.min(height - j, imgHeight);
-                        this.renderer.drawImage(material, i, j, imageWidth, imageHeight);
+                        this.renderer.drawImage(this.materialSquere, i + x, j + y, 
+                            imageWidth, imageHeight);
                     }
                 }
             }
 
         },
         getImage : function(){
-            //this.renderer.render(this.stage);
-            //console.log(this.stage.children.length);
             var newImg = new Image();
             newImg.src = this.canvas.toDataURL();
             return newImg;
         },
 
+        
+    });
+    return Drawer;
+});
         /*__init__: function (){
             this.stage = new Pixi.Stage(0x000000); 
             this.pixiRenderer = Pixi.autoDetectRenderer(100, 100, this.canvas, false);
@@ -112,10 +232,8 @@ ctx.drawImage(newImg, 50, 50, 20, 20);*/
             newImg.src = this.pixiRenderer.view.toDataURL();
             return newImg;
         },*/
-    });
-    return Drawer;
-});
 
+            //this.renderer.fillStyle = 'rgba(0,0,0,0)';
 /*
 // create an new instance of a pixi stage
     

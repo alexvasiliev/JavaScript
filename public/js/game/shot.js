@@ -1,13 +1,13 @@
 define([
     'classy',
-    'game/movingobject', 
+    'game/baseobject', 
     'game/sprite'
 ], function (
     Class,
-    MovingObject,
+    BaseObject,
     Sprite
 ){
-    var Shot = MovingObject.$extend ( {
+    var Shot = BaseObject.$extend ( {
         __init__ : function(side, type) {
             var img = resourses["shot"+type];
             this.$super(img);

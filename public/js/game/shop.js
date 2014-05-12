@@ -9,6 +9,7 @@ define([
         __init__ : function() {
             var img  = resourses["shop_screen"];
             this.$super(img, "gui");
+            this.alpha = 0;
             this.x = renderer.sceneWidth/2;
             this.y = renderer.sceneHeight/2;
             var shift = 100;
@@ -16,10 +17,10 @@ define([
             var width = renderer.sceneWidth-shift;
             var height = renderer.sceneHeight-shift
             var sizeK = img.width / img.height;
-            console.log("Shop "+ img);
+            /*console.log("Shop "+ img);
             console.log(width+","+height);
             console.log(img.width+","+img.height);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!");
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!");*/
 
             if(img.width > 0 && img.height > 0 && width / img.width < height / img.height){
                 console.log("width");

@@ -18,7 +18,7 @@ define([
 
         initialize: function () {
             this.container.id = this.viewName;
-            this.container.style.display = 'none';
+            //this.container.style.display = 'none';
             document.body.appendChild(this.container);
 			if( this.checkDevice()) {
             	this.render();
@@ -30,7 +30,7 @@ define([
             $('#'+this.viewName).html("Sory, your device can not be used as joystick.");
 		},
         render: function () {
-                $(this.className).html(this.template());
+                 $('#'+this.viewName).html(this.template());
                 $("#helpMsg").hide();
                 $("#helpMsg").css("opacity", 0.5)
                 $("#helpMsg").css("font-size" , "30px");
@@ -41,11 +41,13 @@ define([
                 window.addEventListener('orientationchange', function(){
                     alert("Orientation: " + window.orientation);
                 });
-                $(this.className).on("start",function(){
+                $(document).on("start",function(){
+                    console.log("trigger");
                     $("#helpMsg").show();
                     $("#connectForm").hide();
                     document.addEventListener('click', function(){
                         window.server.send("3 ", function(){});
+                    console.log("click");
                     });
                 });
                 /*codes

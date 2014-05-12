@@ -31,7 +31,7 @@ define([
 	var message = document.getElementById('message');
 	var input = document.getElementById('token');
 	var start, init, reconnect;
-
+	console.log("not noll" + input);
 	// Создаем связь с сервером
 	var server = new Connector({
 			server: ['bind'],
@@ -45,7 +45,10 @@ define([
 		// Если id нет
 		if (!localStorage.getItem('playerguid')){
 			// Ждем ввода токена
-			input.parentNode.addEventListener('submit', function(e){
+
+            console.log("document: " + document.body.innerHTML);
+			var aux = input.parentNode;
+			aux.addEventListener('submit', function(e){
 				e.preventDefault();
 
 				// И отправляем его на сервер
@@ -86,6 +89,7 @@ define([
 		// Сохраняем id связки
 		localStorage.setItem('playerguid', guid);
 		message.innerHTML = 'game';
+		$(document).trigger("start");
 	};
 
 	server.on('reconnect', reconnect);

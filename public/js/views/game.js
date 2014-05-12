@@ -34,7 +34,7 @@ define([
 			} else {
 				this.renderSupportError();
 			}
-			
+			console.log("not null 2" + document.getElementById('token'));
         },
 		postRenderInitialize: function () {
 			$(document).on('game::over', function(event, s){console.log(event); console.log(s); gameover.show(s);});

@@ -52,7 +52,7 @@ define([
 		if (!localStorage.getItem('consoleguid')){
 			// Получаем токен
 			server.getToken(function(token){
-				//message.innerHTML = 'token: ' + token;
+				message.innerHTML = 'token: ' + token;
 				console.log(token);
 			});
 		} else { // иначе
@@ -85,6 +85,7 @@ define([
 		console.log('start console');
 		// Сохраняем id связки
 		localStorage.setItem('consoleguid', guid);
+		//$("#game").trigger("start");
 		//message.innerHTML = 'game';
 	};
 

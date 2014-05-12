@@ -98,7 +98,7 @@ define([
 
 	// Обмен сообщениями
 	server.on('message', function(data, answer){
-		console.log('message');
+		console.log('messageJoy');
 		//console.log('message', data);
 		//answer('answer');
 	});

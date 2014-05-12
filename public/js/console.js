@@ -85,14 +85,14 @@ define([
 		console.log('start console');
 		// Сохраняем id связки
 		localStorage.setItem('consoleguid', guid);
-		//$("#game").trigger("start");
+		$(document).trigger("gamestart");
 		//message.innerHTML = 'game';
 	};
 
 	init();
 	// Обмен сообщениями
 	server.on('message', function(data, answer){
-		console.log('message');
+		console.log('messageCon');
 		//console.log('message', data);
 		//answer('answer');
 	});

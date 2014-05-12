@@ -27,14 +27,13 @@ define([
                 
             });
 			this.container.id = this.viewName;
-			this.container.style.display = "none";
+			//this.container.style.display = "none";
 			document.body.appendChild(this.container);
 			if (this.checkSupport()) {
 				this.render();
 			} else {
 				this.renderSupportError();
 			}
-			console.log("not null 2" + document.getElementById('token'));
         },
 		postRenderInitialize: function () {
 			$(document).on('game::over', function(event, s){console.log(event); console.log(s); gameover.show(s);});
@@ -42,6 +41,9 @@ define([
         render: function () {
 			$('#'+this.viewName).html(this.template());
 			this.postRenderInitialize();
+			 $(document).on("gamestart",function(){
+			 	console.log("gamestart");
+                });
         },
 		renderSupportError: function () {
 			$('#'+this.viewName).html("Sorry, your browser not supported :(");

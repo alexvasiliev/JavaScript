@@ -90,6 +90,7 @@ define([
 		localStorage.setItem('playerguid', guid);
 		message.innerHTML = 'game';
 		$(document).trigger("start");
+		//window.location.reload();
 	};
 
 	server.on('reconnect', reconnect);
@@ -97,11 +98,11 @@ define([
 	init();
 
 	// Обмен сообщениями
-	server.on('message', function(data, answer){
+	/*server.on('message', function(data, answer){
 		console.log('messageJoy');
 		//console.log('message', data);
 		//answer('answer');
-	});
+	});*/
 
 	window.server = server;
 	

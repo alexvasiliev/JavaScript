@@ -10,6 +10,7 @@ define([
     $
 ){
     var alpha, beta, gamma, i = 0;
+    var joystickStatus = false;
     var View = Backbone.View.extend({
         template: tmpl,
         className: "#joystick",
@@ -25,18 +26,10 @@ define([
 			} else {
 				this.renderError();
 			}
-        },
-		renderError: function () {
-            $('#'+this.viewName).html("Sory, your device can not be used as joystick.");
-		},
-        render: function () {
                  $('#'+this.viewName).html(this.template());
                 $("#helpMsg").hide();
                 $("#helpMsg").css("opacity", 0.5)
                 $("#helpMsg").css("font-size" , "30px");
-                require(['joystick'], function (joystick) {
-
-                });
                 
                 window.addEventListener('orientationchange', function(){
                     alert("Orientation: " + window.orientation);
@@ -56,18 +49,8 @@ define([
                 1 2 - move right
                 1 3 - move bot
                 1 4 - move top
-                2 * - acceleration
-                2 1 - acceleration x
-                2 2 - acceleration y
                 3 - shoot
                 */
-                window.addEventListener('devicemotion',function(event){
-                    var div = document.getElementById('joystick');
-                    //div.innerHTML = event.acceleration.x + " " +event.acceleration.y + " " +event.acceleration.z;
-                    window.server.send("2 1 " + Math.abs(event.acceleration.x))
-                    window.server.send("2 2 " + Math.abs(event.acceleration.y))
-
-                });
                 window.addEventListener('deviceorientation', function(event){
                     var div = document.getElementById('joystick');
                         if (i==0){
@@ -103,9 +86,20 @@ define([
                     //div.innerHTML = event.alpha +  " " + event.beta + " " + event.gamma + "<br/>";
                 });
             
+        },
+		renderError: function () {
+            $('#'+this.viewName).html("Sory, your device can not be used as joystick.");
+		},
+        render: function () {
 
         },
         show: function () {
+            if (!joystickStatus) {
+                joystickStatus = true;
+                require(['joystick'], function (joystick) {
+
+                });
+            }
             console.log("show");
             this.container.style.display = 'block';
             this.trigger("view::show");

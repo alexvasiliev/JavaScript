@@ -14,6 +14,7 @@ define([
     consol
 ){
 
+	var consoleStatus = false;
     var GameView = Backbone.View.extend({
 
         template: tmpl,
@@ -23,9 +24,7 @@ define([
 
         initialize: function () { 
         	$(this.className).html(this.con());
-            require(['console'], function (console) {
-                
-            });
+            
 			this.container.id = this.viewName;
 			//this.container.style.display = "none";
 			document.body.appendChild(this.container);
@@ -50,6 +49,12 @@ define([
 			this.postRenderInitialize();
         },
         show: function () {
+        	if (!consoleStatus){
+        		consoleStatus = true;
+        		require(['console'], function (console) {
+                
+            	});
+        	}
             console.log("game::show");
 			this.container.style.display = "block";
 			this.trigger("view::show");

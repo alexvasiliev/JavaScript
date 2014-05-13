@@ -42,31 +42,36 @@ define([
                 this.ship.vangle += this.ship.angleVelocity;
             }
 
-           /* $(this.className).on('action', function(event, param){
+
+            $(document).on('action', function(event, param){
                 par = param.split(' ');
                 if(par[0] == 1){
                     if(par[1] == 1)
                     {
-                        console.log("movey");
+                        console.log("move1");
 
                     }
                     if(par[1] == 2)
                     {
-                        console.log("movey");
+                        console.log("move2");
 
                     }
-                }
-                if(par[0] == 2){
-                    if(par[1] == 1)
-                        console.log("acselery");
-                    if(par[1] == 2)
-                        console.log("acselerX");
+                    if(par[1] == 3)
+                    {
+                        console.log("move3");
+
+                    }
+                    if(par[1] == 4)
+                    {
+                        console.log("move4");
+
+                    }
                 }
                 if(par[0] == 3){
                     console.log("shoot");
                 }
                 //console.log('ping', param);
-            });*/
+            });
 
         },
         attack : function () {

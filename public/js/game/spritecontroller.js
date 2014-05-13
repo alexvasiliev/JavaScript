@@ -29,7 +29,8 @@ define([
             this.sprite.y = this.owner.y;
             this.sprite.alpha = this.owner.alpha;
             this.sprite.rotation = this.owner.angle;
-
+            //console.log(this.sprite.width+", "+this.sprite.height+", "+this.sprite.x+", "+
+            //    this.sprite.y+", "+this.sprite.alpha+", "+this.sprite.rotation);
         },
         kill : function (){
                 this.todelete = true;

@@ -15,7 +15,7 @@ define([
 ){
     var ModuleBuilder = Class.$extend ( {
         __init__: function (){
-            this.cellSize = 5;
+            this.cellSize = 25;
             this.sizeConstant = 1;
             ////////
             this.width = null;
@@ -28,15 +28,21 @@ define([
             this.module = null;
         },
         newModule : function(width, height, tip, id){
-            console.log("newModule");
+            //console.log("newModule");
             this.width  = width*this.sizeConstant;
             this.height = height*this.sizeConstant;
 
             this.map = null;
 
+
             this.mapRows = null;
             this.mapColomns = null;
             this.module = new Module();
+            this.module.material = "steel";
+
+            this.module.sizeX = this.width * this.cellSize;
+            this.module.sizeY = this.width * this.cellSize;
+
             this.createBase(tip);
             if(id){
                 this.module.id = id;
@@ -48,37 +54,37 @@ define([
         },
 
         readModule : function (target){
-            console.log("readModule");
-            var width = this.getValue(target, "width");
-            var height = this.getValue(target, "height");
-            var tip = this.getValue(target, "tip");
-            var id = this.getValue(target, "id");
+            //console.log("readModule");
+            var width = Number(this.getValue(target, "width"));
+            var height = Number(this.getValue(target, "height"));
+            var tip = Number(this.getValue(target, "tip"));
+            var id = Number(this.getValue(target, "id"));
             this.newModule(width, height, tip, id);
             return;
         },
 
         readConnection : function (target){
-            console.log("readConnection");
-            var connectionID = this.getValue(target, "id");
-            var targetID = this.getValue(target, "targetId");
-            var size = this.getValue(target, "size");
-            var x = this.getValue(target, "x");
-            var y = this.getValue(target, "y");
+            //console.log("readConnection");
+            var connectionID = Number(this.getValue(target, "id"));
+            var targetID = Number(this.getValue(target, "targetId"));
+            var size = Number(this.getValue(target, "size"));
+            var x = Number(this.getValue(target, "x"));
+            var y = Number(this.getValue(target, "y"));
             this.addConnection(size, x, y, connectionID, targetID);
             return;
         },
         readSlot : function (target){
-            console.log("readSlot");
-            var slotID = this.getValue(target, "id");
-            var targetID = this.getValue(target, "targetId");
-            var size = this.getValue(target, "size");
-            var x = this.getValue(target, "x");
-            var y = this.getValue(target, "y");
+            //console.log("readSlot");
+            var slotID = Number(this.getValue(target, "id"));
+            var targetID = Number(this.getValue(target, "targetId"));
+            var size = Number(this.getValue(target, "size"));
+            var x = Number(this.getValue(target, "x"));
+            var y = Number(this.getValue(target, "y"));
             this.addSlot(size, x, y, slotID, targetID);
             return;
         },
         fromXML : function(module){
-            console.log("fromXML");
+            //console.log("fromXML");
             this.readModule(module);
 
             var connections = module.getElementsByTagName("connection");
@@ -95,21 +101,19 @@ define([
                     this.readSlot(slot);
                 }
             }
-            for(var k = 0; k < rawSlots.length; k++){
-
-            }
         },
         createBase : function(tip){
-            console.log("createBase " + tip);
-            if(tip){
+            //console.log("createBase " + tip);
+
+            this.module.map = this.createMap(this.width, this.height);
+            /*if(tip){
                 return;
             }else{
-                this.module.map = this.createMap(this.width, this.height);
 
-            }
+            }*/
         },
         createMap : function(width, height){
-            console.log("createMap");
+            //console.log("createMap");
             var arr = new Array();
             var i = 0;
             var j = 0;
@@ -135,8 +139,9 @@ define([
             if((cellx >= 0 || cellx < this.module.mapColomns || 
                                 celly >= 0 || celly < this.module.mapRows) &&
                                 this.module.map[cellx][celly] == null){
-                var newSlot = new Slot (size, this.cellSize * (cellx + 0.5), 
-                    this.cellSize * (celly + 0.5));
+                /*var newSlot = new Slot (size, this.cellSize * (cellx + 0.5), 
+                    this.cellSize * (celly + 0.5));*/
+                var newSlot = new Slot (size, cellx, celly);
                 this.module.map[cellx][celly] = newSlot;
                 this.module.slots.push(newSlot);
                 if(id){
@@ -150,8 +155,8 @@ define([
             }
         },
         addConnection : function(size, cellx, celly, id, targetId){
-            console.trace();
-            console.log(this);
+            //console.trace();
+            //console.log(this);
             if(this.module.map[cellx][celly] != null){
                 return;
             }
@@ -168,9 +173,11 @@ define([
             }
 
             if(angle != angleNull){
-                var newConnection = new Connection (size, 
+                /*var newConnection = new Connection (size, 
                     this.cellSize * (cellx + 0.5 + Math.sin(angle)*0.5), 
-                    this.cellSize * (celly + 0.5 + Math.cos(angle)*0.5), angle);
+                    this.cellSize * (celly + 0.5 + Math.cos(angle)*0.5), angle);*/
+                var newConnection = new Connection (size, cellx, celly, angle);
+                newConnection.owner = this.module;
                 this.module.map[cellx][celly] = newConnection;
                 this.module.connections.push(newConnection);
 
@@ -181,10 +188,19 @@ define([
                     newConnection.targetId = targetId;
                 }
 
+            }else{
+                alert("addConnection::angle ="+angle);
             }
-            alert("addConnection::angle =");
         },
         getModule : function(){
+            //console.log(this.module.map);
+            drawer.drawModule(this.module)
+            this.module.img = drawer.getImage();
+
+            this.module.width = this.module.img.width;
+            this.module.height = this.module.img.height;
+            //console.log( this.module.width);
+            this.module.createSprite();
             return this.module;
         },
 

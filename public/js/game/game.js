@@ -206,6 +206,14 @@ window.requestAnimFrame = (function() {
         addPlayer : function () {
             builder.ship.fromXML("player");
             this.playerShip = builder.ship.getShip();
+            this.playerShip.x = 300;
+            this.playerShip.y = 300;
+            this.playerShip.velocity = 0.07;
+            this.playerShip.angleVelocity = 0.002;
+            this.player = new Player(this.playerShip, 1);
+            this.pilots.push(this.player);
+            this.ships.push(this.playerShip);
+            //console.log(this.playerShip);
             /*this.playerShip = new Ship(1, 1);
             this.playerShip.x = renderer.sceneWidth/2;
             this.playerShip.y = renderer.sceneHeight/2;
@@ -213,8 +221,6 @@ window.requestAnimFrame = (function() {
             this.playerShip.angleVelocity = 0.002;
             this.ships.push(this.playerShip);
 
-            this.player = new Player(this.playerShip, 1);
-            this.pilots.push(this.player);
 
             var module = new Module(1, 0);
             this.playerShip.attachModule(module, module.connections[0], 0, 
@@ -286,6 +292,10 @@ window.requestAnimFrame = (function() {
             this.checkBroders();
             this.addEnemies();
             this.score++;
+            /*console.log("----------------------------------------------");
+            console.log(this.player.ship.body.vx+", "+this.player.ship.body.vy);
+            console.log(this.player.ship.x+", "+this.player.ship.y);
+            console.log(this.x+", "+this.y);*/
         },
         drawMany : function (objects) {
             for (var i = 0; i < objects.length; i++)
@@ -339,6 +349,7 @@ window.requestAnimFrame = (function() {
                 var shiftPoint = {};
                 shiftPoint.x = this.x;
                 shiftPoint.y = this.y;
+                //console.log(this.spriteContainers.length);
                 //console.log(shiftPoint);
                 renderer.mainView.render(renderer.world, shiftPoint);
             //}
@@ -362,20 +373,21 @@ window.requestAnimFrame = (function() {
             this.x += this.vx;
             this.y += this.vy;
             var speed = 0.01;
-            this.vx -= (this.playerShip.x + this.x - this.renderer.sceneWidth/2)*speed;
-            this.vy -= (this.playerShip.y + this.y - this.renderer.sceneHeight/2)*speed;
+            //console.log(this.playerShip.x);
+            //this.vx -= (this.playerShip.x + this.x - this.renderer.sceneWidth/2)*speed;
+            //this.vy -= (this.playerShip.y + this.y - this.renderer.sceneHeight/2)*speed;
             //console.log((this.playerShip.x + this.x) + ", " + (this.playerShip.y + this.y));
             this.vx *= this.friction;
             this.vy *= this.friction;
         },
         addEnemies : function () {
             //console.log(this.enemyTimer);
-            this.enemyTimer += 1;
+            /*this.enemyTimer += 1;
             if(this.enemyTimer > this.enemyCooldown){
                 this.enemyTimer = 0;
                 engine.addEnemy(this.enemyPower);
                 this.enemyPower += 1;
-            }
+            }*/
         },
         update : function () {
             if(!this.play){

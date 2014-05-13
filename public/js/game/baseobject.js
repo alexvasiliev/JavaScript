@@ -25,6 +25,7 @@ define([
             this.sizeY = 0;
 
             this.img = Image;
+            this.stage = stage;
 
             this.todelete = false;
 
@@ -35,14 +36,17 @@ define([
 
             this.depth = 1;
 
-            var dx = this.x - this.oldX;
-            var dy = this.y - this.oldY;
+            this.oldX = 0;
+            this.oldY = 0;
 
-            if(Image != null){
-                if(!stage){
-                    stage = "world";
+        },
+
+        createSprite : function (){
+            if(this.img != null){
+                if(!this.stage){
+                    this.stage = "world";
                 }
-                game.addSpriteController(new SpriteController(stage, this, Image.src));
+                game.addSpriteController(new SpriteController(this.stage, this, this.img.src));
             }
         },
 
@@ -78,6 +82,7 @@ define([
                 }
                 this.vx = this.x - this.oldX;
                 this.vy = this.y - this.oldY;
+                //console.log("locked turn");
             }else{
                 this.x += this.vx;
                 this.y += this.vy;

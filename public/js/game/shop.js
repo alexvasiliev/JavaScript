@@ -23,11 +23,11 @@ define([
             console.log("!!!!!!!!!!!!!!!!!!!!!!!!!");*/
 
             if(img.width > 0 && img.height > 0 && width / img.width < height / img.height){
-                console.log("width");
+                //console.log("width");
                 this.width = width*sizeModifier;
                 this.height = this.width / sizeK;
             }else{
-                console.log("height");
+                //console.log("height");
                 this.height = height*sizeModifier;
                 this.width = this.height * sizeK;
             }

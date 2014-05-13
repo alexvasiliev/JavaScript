@@ -9,15 +9,16 @@ define([
 ){
     var Drawer = Class.$extend ( {
         __init__: function (){
-            this.angleSize = 5;
+            this.angleSize = 10;
             this.cellSize = 25;
             this.slotSize = 15;
+            this.connectionSize = 15;
             ///////////////
-            this.canvas = document.createElement('canvas');
+            /*this.canvas = document.createElement('canvas');
             document.body.appendChild(this.canvas); ;
             //this.canvas.style.border = "1px solid #d3d3d3;";
             this.canvas.style = "border:1px solid #d3d3d3;";
-            this.renderer = this.canvas.getContext("2d");
+            this.renderer = this.canvas.getContext("2d");*/
 
             this.width = null;
             this.height = null;
@@ -41,10 +42,34 @@ define([
             this.cellHeight = null;
 
         },
+        drawModule : function(module){
+            //console.log("drawModule");
+            this.newDrawing(module.mapColomns, module.mapRows);
+
+            this.setBaseMaterial(module.material);
+            this.setConnectorMaterial();
+            this.drawBase();
+
+            for(var i = 0; i < module.connections.length; i++){
+                this.drawConnection(module.connections[i]);
+            }
+            for(var i = 0; i < module.slots.length; i++){
+                this.drawSlot(module.slots[i]);
+            }
+        },
         newDrawing : function(width, height){
+
+            this.canvas = document.createElement('canvas');
+            document.body.appendChild(this.canvas); ;
+            //this.canvas.style.border = "1px solid #d3d3d3;";
+            this.canvas.style = "border:1px solid #d3d3d3;";
+            this.renderer = this.canvas.getContext("2d");
+
             this.width  = width*this.cellSize;
-            this.height = height*this.cellSize
-            ;
+            this.height = height*this.cellSize;
+
+            //console.log(this.width+", "+this.height);
+
             this.canvas.width  = this.width;
             this.canvas.height = this.height;
 
@@ -59,106 +84,55 @@ define([
             this.cellWidth = null;
             this.cellHeight = null;
         },
+
         setBaseMaterial : function (material){
             this.materialName = "material_" + material;
             this.materialSquere = resourses[this.materialName + "_squere"];
             this.materialTriangle = resourses[this.materialName + "_triangle"];
         },
+
         setConnectorMaterial : function (){
             this.connectorName = "module_connection";
-            this.connectorEnd = resourses[this.materialName + "_end"];
-            this.connectorSlot = resourses[this.materialName + "_node_center"];
-            this.connectorLine = resourses[this.materialName + "_line"];
-            this.connectorConnection = resourses[this.materialName + "_connector"];
+            this.connectorEnd = resourses[this.connectorName + "_end"];
+            this.connectorSlot = resourses[this.connectorName + "_node_center"];
+            this.connectorLine = resourses[this.connectorName + "_line"];
+            this.connectorConnection = resourses[this.connectorName + "_connector"];
         },
-        drawBase : function(tip){
-            if(tip){
-                return;
-            }
-            else{
-                this.map = this.createMap(this.width/this.cellSize, this.height/this.cellSize);
 
-                this.drawRectangle(this.width - 2*this.angleSize, this.height - 2*this.angleSize, 
-                    this.angleSize, this.angleSize);//center
+        drawBase : function(){
+            this.drawRectangle(this.width - 2*this.angleSize, this.height - 2*this.angleSize, 
+                this.angleSize, this.angleSize);//center
 
-                this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
-                    0, this.angleSize);//left line
-                this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
-                    this.width - this.angleSize, this.angleSize);//right linr
-                this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
-                    this.angleSize, 0);//top line
-                this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
-                    this.angleSize, this.height - this.angleSize);//bottom line
+            this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
+                0, this.angleSize);//left line
+            this.drawRectangle(this.angleSize, this.height - 2*this.angleSize, 
+                this.width - this.angleSize, this.angleSize);//right linr
+            this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
+                this.angleSize, 0);//top line
+            this.drawRectangle(this.width - 2*this.angleSize, this.angleSize, 
+                this.angleSize, this.height - this.angleSize);//bottom line
 
-                this.drawTriangle(this.angleSize, this.angleSize, 
-                    this.width - this.angleSize, 0, 
-                    0);//top right triangle
-                this.drawTriangle(this.angleSize, this.angleSize, 
-                    this.width - this.angleSize, this.height - this.angleSize, 
-                    Math.PI/2);//bottom right triangle
-                this.drawTriangle(this.angleSize, this.angleSize, 
-                    0, this.height - this.angleSize, 
-                    Math.PI);//bottom left triangle
-                this.drawTriangle(this.angleSize, this.angleSize, 
-                    0, 0, 
-                    -Math.PI/2);//top right triangle
-            }
+            this.drawTriangle(this.angleSize, this.angleSize, 
+                this.width - this.angleSize, 0, 
+                0);//top right triangle
+            this.drawTriangle(this.angleSize, this.angleSize, 
+                this.width - this.angleSize, this.height - this.angleSize, 
+                Math.PI/2);//bottom right triangle
+            this.drawTriangle(this.angleSize, this.angleSize, 
+                0, this.height - this.angleSize, 
+                Math.PI);//bottom left triangle
+            this.drawTriangle(this.angleSize, this.angleSize, 
+                0, 0, 
+                -Math.PI/2);//top right triangle
         },
-        createMap : function(width, height){
-            var arr = new Array();
-            var i = 0;
-            var j = 0;
-            for(i = 0; i < width; i++){
-                arr[i] = new Array();
-                for(j = 0; j < height; j++){
-                    arr[i][j] = null;
-                }
-            }
-            this.mapRows = j;
-            this.mapColomns = i;
-            this.cellWidth = width / this.mapRows;
-            this.cellHeight = height / this.mapColomns;
-            //console.log(this.mapRows + ", " + this.mapColomns);
-            return arr;
-        },
-        attachCenter : function(){
-            var centerRow = Math.round(this.mapRows/2);
-            var centerColomn = Math.round(this.mapColomns/2);
-            addSlot(centerRow, centerColomn);
 
-        },
-        addSlot : function(cellx, celly){
-            this.map[cellx][celly] = 1;
-            drawSlot(this.slotSize, this.slotSize, 
-                cellx * this.cellWidth, celly * this.cellHeight, 0);
-        },
-        drawSlot : function(width, height, x, y, angle){
-            x += this.width/2;
-            y += this.height/2;
-            //console.log(width + ", " + height + ", " + x + ", " + y + ", " + angle );
-            this.renderer.translate(x, y);
-            this.renderer.rotate(angle);
-            this.renderer.drawImage(this.materialTriangle, -width/2, -height/2, width, height);
-            this.renderer.rotate(-angle);
-            this.renderer.translate(-x, -y);
-        },
-        drawTriangle : function(width, height, x, y, angle){
-            x += this.width/2;
-            y += this.height/2;
-            //console.log(width + ", " + height + ", " + x + ", " + y + ", " + angle );
-            this.renderer.translate(x, y);
-            this.renderer.rotate(angle);
-            this.renderer.drawImage(this.materialTriangle, -width/2, -height/2, width, height);
-            this.renderer.rotate(-angle);
-            this.renderer.translate(-x, -y);
-        },
+
         drawRectangle : function(width, height, x, y){
             if(this.materialSquere == null){
                 return;
             }
             var imgWidth = this.materialSquere.naturalWidth;
             var imgHeight = this.materialSquere.naturalHeight;
-            //console.log(imgWidth + ", " + imgHeight + ", " + width + ", " + height );
             var i = 0;
             var j = 0;
             if(imgWidth > 0 && imgHeight > 0 && width > 0 && height > 0){
@@ -172,6 +146,51 @@ define([
                 }
             }
 
+        },
+
+        /*attachCenter : function(){
+            var centerRow = Math.round(this.mapRows/2);
+            var centerColomn = Math.round(this.mapColomns/2);
+            addSlot(centerRow, centerColomn);
+        },*/
+        /*drawSlot : function(slot){
+
+            drawSlot(this.slotSize, this.slotSize, 
+                cellx * this.cellWidth, celly * this.cellHeight, 0);
+        },*/
+
+        drawTriangle : function(width, height, x, y, angle){
+            this.drawObject(this.materialTriangle, width, height, x + width/2, y + height/2, 0.5, 0.5, angle);
+        },
+
+        drawSlot : function(slot){
+            var width = this.slotSize;
+            var height = this.slotSize;
+            var x = this.cellSize * (slot.x + 0.5);
+            var y = this.cellSize * (slot.y + 0.5);
+            this.drawObject(this.connectorSlot, width, height, x, y, 0.5, 0.5, 0);
+        },
+
+        drawConnection : function(connection){
+            ///console.log("drawConnection");
+            var width = this.connectionSize;
+            var height = this.connectionSize;
+            var x = this.cellSize * (connection.x + 0.5);
+            var y = this.cellSize * (connection.y + 0.5);
+            var angle = connection.angle;
+           //onsole.log(connection.x+", "+connection.y);
+            //nsole.log(x+", "+y);
+            this.drawObject(this.connectorConnection, width, height, x, y, 0.5, 0, angle);
+        },
+
+        drawObject : function(image, width, height, x, y, pivotx, pivoty, angle){
+            var shiftx = x;// + width*pivotx;
+            var shifty = y;// + height*pivoty;
+            this.renderer.translate(shiftx, shifty);
+            this.renderer.rotate(angle);
+            this.renderer.drawImage(image, -width*pivotx, -height*pivoty, width, height);
+            this.renderer.rotate(-angle);
+            this.renderer.translate(-shiftx, -shifty);
         },
         getImage : function(){
             var newImg = new Image();

@@ -26,7 +26,7 @@ define([
     var Resourses = Class.$extend ( {
         imageLoadHandler :function (){
             resourses.unloaded--;
-            console.log(resourses.unloaded);
+            //console.log(resourses.unloaded);
             if(resourses.unloaded == 0){
                 resourses.finishLoading();
             }
@@ -50,10 +50,10 @@ define([
             if (this.status == 200)
             {
                 
-                console.log(this);
+                //console.log(this);
                 resourses.unloaded--;
                 resourses[this.target] = this.responseXML;
-                console.log(resourses.unloaded);
+                //console.log(resourses.unloaded);
                 if(resourses.unloaded == 0){
                     resourses.finishLoading();
                 }
@@ -103,7 +103,7 @@ define([
         finishLoading : function (){
             resourses.loaded = true;
             console.log("Resourses loaded");
-            console.log(this);
+            //console.log(this);
         },
     });
     return Resourses;

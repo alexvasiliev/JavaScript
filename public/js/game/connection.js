@@ -7,6 +7,7 @@ define([
         __init__ : function(size, x, y, angle) {
             this.status = "open";
             this.target = null;
+            this.owner = null;
             this.size = size;
             this.x = x;
             this.y = y;

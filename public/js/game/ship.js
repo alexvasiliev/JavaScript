@@ -32,6 +32,7 @@ define([
         turn : function () {
             this.$super();
             this.body.turn();
+            //console.log(this.body);
         },
         attachItem : function (item, type, slot, module) {
             console.log("i`m trying to attach item");

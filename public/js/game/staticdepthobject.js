@@ -15,8 +15,8 @@ define([
                 img = resourses["background_star"+number];
             }
 
-            console.log(type, number);
-            console.log(img);
+            //console.log(type, number);
+            //console.log(img);
             this.$super(img);
 
 

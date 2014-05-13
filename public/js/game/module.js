@@ -34,8 +34,6 @@ define([
             this.destroyed = false;
 
             this.burnTimer = 0;
-            this.oldX = 0;
-            this.oldY = 0;
 
             //////////
 
@@ -60,7 +58,6 @@ define([
             this.item = null;
             this.connections = [];
             this.slots = [];
-            this.destroyed == false;
 
             if(type == 0 && number == 0){
 
@@ -101,7 +98,7 @@ define([
                 this.energy = this.energyCapacity;
             }
             this.energyBalance = this.energy/this.energyCapacity;
-            this.alpha = 0.5 + this.energyBalance / 2;
+            //this.alpha = 0.5 + this.energyBalance / 2;
             for (var i = 0; i < this.connections.length;i++){
                 if(this.connections[i].status != "open"){
                     if(this.energyBalance > this.connections[i].target.energyBalance){
@@ -112,6 +109,7 @@ define([
             }
         },
         turn : function () {
+            //console.log(this);
             if(this.destroyed == false){
                 if(this.curHealth < this.maxHealth/2){
                     this.burn();

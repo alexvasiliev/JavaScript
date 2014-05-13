@@ -15,14 +15,14 @@
 		</connection>
 		<connection>
 			<id>2</id>
-			<targetId>6</targetId>
+			<targetId>0</targetId>
 			<x>1</x>
 			<y>0</y>
 			<size>1</size>
 		</connection>
 		<connection>
 			<id>3</id>
-			<targetId>7</targetId>
+			<targetId>0</targetId>
 			<x>0</x>
 			<y>1</y>
 			<size>1</size>
@@ -42,46 +42,6 @@
 		<tip>false</tip>
 		<connection>
 			<id>5</id>
-			<targetId>0</targetId>
-			<x>0</x>
-			<y>1</y>
-			<size>1</size>
-		</connection>
-		<slot>
-			<id>1</id>
-			<targetId>0</targetId>
-			<x>1</x>
-			<y>1</y>
-			<size>1</size>
-		</slot>
-	</module>
-	<module>
-		<id>2</id>
-		<width>2</width>
-		<height>3</height>
-		<tip>false</tip>
-		<connection>
-			<id>6</id>
-			<targetId>0</targetId>
-			<x>0</x>
-			<y>1</y>
-			<size>1</size>
-		</connection>
-		<slot>
-			<id>1</id>
-			<targetId>0</targetId>
-			<x>1</x>
-			<y>1</y>
-			<size>1</size>
-		</slot>
-	</module>
-	<module>
-		<id>2</id>
-		<width>2</width>
-		<height>3</height>
-		<tip>false</tip>
-		<connection>
-			<id>7</id>
 			<targetId>0</targetId>
 			<x>0</x>
 			<y>1</y>

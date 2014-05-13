@@ -27,6 +27,7 @@ define([
             this.$super();
         },
         move : function () {
+
             //console.log("hi");
             var backwardsPower = 0.3;
             if(game.keydown["w"] == true){

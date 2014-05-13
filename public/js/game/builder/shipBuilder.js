@@ -2,12 +2,10 @@
 
 define([
     'classy',
-    'pixi',
     'game/ship',
     'game/module',
 ], function (
     Class,
-    Pixi,
     Ship,
     Module
 ){
@@ -27,6 +25,10 @@ define([
 
         autoShip : function(sizeClass, powerLevel){
             this.ship = null;
+            this.newShip();
+            this.createBody(sizeClass, powerLevel);
+            this.addModules(sizeClass, powerLevel);
+            this.autoAttachAllModules();
         },
 
         getValue : function(target, name){
@@ -59,18 +61,16 @@ define([
 
         },
 
-        createBody : function(){
+        createBody : function(sizeClass, powerLevel){
             builder.module.auto(sizeClass * this.sizeClassConstant, true);
-            this.ship.body = builder.module.get();
+            this.ship.body = builder.module.getModule();
+            this.modules.push(this.ship.body);
         },
 
-        addModules : function(){
+        addModules : function(sizeClass, powerLevel){
             for(var i = 0; i < sizeClass; i++){
                 builder.module.auto(sizeClass * this.sizeClassConstant, false);
-                var newModule = builder.module.get();
-                if(this.autoAttach(this.ship.body)){
-
-                }
+                this.modules.push(builder.module.getModule());
             }
         },
 
@@ -80,6 +80,7 @@ define([
                 var module =  this.modules[i];
                 if(this.ship.bodyId == module.id){
                     this.ship.body = module;
+                    this.ship.modules.push(module);
                     module.lock(this.ship);
                 }
             }
@@ -97,9 +98,11 @@ define([
                             var targetModule =  this.modules[j];
                             //console.log(this.modules[i].connections[j].targetId+", "+
                                 //this.modules[k].connections[l].id);
-                            if(this.modules[i].connections[j].targetId == 
-                                this.modules[k].connections[l].id){
-                                this.attachConnections(this.modules[i].connections[j],
+                            if(this.modules[i].connections[j].moduleId == 
+                            this.modules[k].id && 
+                            this.modules[i].connections[j].targetId == 
+                            this.modules[k].connections[l].id){
+                                this.attachConnection(this.modules[i].connections[j],
                                     this.modules[k].connections[l]);
                             }
                         }
@@ -109,24 +112,37 @@ define([
         },
 
         autoAttachAllModules: function(){
-            for(var i = 0; i < this.modules.length; i++){
-                var module =  this.modules[i];
-                module.id = i+1;
-                
+            for(var i = 0; i < this.ship.modules.length; i++){
+                module[i].id = i+1;
+                for(var j = 0; j < this.modules.length; j++){
+                    var module =  this.modules[i];
+                }
             }
         },
 
         autoAttachModules : function(module1, module2){
+            for(var i = 0; i < modules1.connections.length; i++){
+                for(var j = 0; j < modules2.connections.length; j++){
+                    if(attemptConnection(modules1.connections[i], modules1.connections[j])){
+                        attachConnection(modules1.connections[i], modules1.connections[j]);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+        attemptConnection : function(connectionOld, connectionNew){
 
-            if(1 == 1){
-                return true;
-            }else{
+            if(connectionNew.status != "open" || connectionOld.status != "open"){
+                return false;
+            }
+            if(connectionNew.size > connectionOld.size){
                 return false;
             }
         },
 
-        attachConnections : function(connectionOld, connectionNew){
-            console.log("attachConnections");
+        attachConnection : function(connectionOld, connectionNew){
+            //console.log("attachConnections");
             var angle = connectionOld.angle - connectionNew.angle - Math.PI;
             var transition = Math.min(connectionNew.energyTransitionMax, connectionOld.energyTransitionMax);
             connectionNew.status = "connected";
@@ -137,7 +153,7 @@ define([
             connectionOld.energyTransition = transition;
 
             var shift = {};
-            console.log(connectionOld.angle+", "+connectionNew.angle+", "+angle);
+            //console.log(connectionOld.angle+", "+connectionNew.angle+", "+angle);
 
             var moduleNewBaseShiftx = connectionNew.x + 0.5 - connectionNew.owner.mapColomns/2;
             var moduleNewBaseShifty = connectionNew.y + 0.5 - connectionNew.owner.mapRows/2;
@@ -151,28 +167,20 @@ define([
             moduleOldBaseShiftx -= 0.5 * Math.sin(connectionOld.angle);
             moduleOldBaseShifty += 0.5 * Math.cos(connectionOld.angle);
 
-            /*var baseShiftx = connectionOld.owner.mapColomns/2 - connectionNew.owner.mapColomns/2;
-            var baseShifty = connectionOld.owner.mapRows/2 - connectionNew.owner.mapRows/2;
-            console.log(baseShiftx+", "+baseShifty);
-            var newConx = connectionNew.x - baseShiftx;
-            var newCony = connectionNew.y - baseShifty;
-            console.log(connectionOld.owner.mapColomns+", "+connectionNew.owner.mapColomns);
-            console.log(connectionOld.owner.mapRows+", "+connectionNew.owner.mapRows);
-            console.log(newConx+", "+newCony);*/
-            console.log(moduleNewBaseShiftx+", "+moduleNewBaseShifty);
-            console.log(moduleOldBaseShiftx+", "+moduleOldBaseShifty);
+            //console.log(moduleNewBaseShiftx+", "+moduleNewBaseShifty);
+            //console.log(moduleOldBaseShiftx+", "+moduleOldBaseShifty);
             var moduleNewShiftx = +Math.sin(angle)*(moduleNewBaseShifty) - Math.cos(angle)*(moduleNewBaseShiftx);
             var moduleNewShifty = -Math.cos(angle)*(moduleNewBaseShifty) - Math.sin(angle)*(moduleNewBaseShiftx);
             var moduleOldShiftx = +Math.sin(connectionNew.owner.angle)*(moduleOldBaseShifty) - 
                                             Math.cos(connectionNew.owner.angle)*(moduleOldBaseShiftx);
             var moduleOldShifty = -Math.cos(connectionNew.owner.angle)*(moduleOldBaseShifty) - 
                                             Math.sin(connectionNew.owner.angle)*(moduleOldBaseShiftx);
-            console.log(moduleNewShiftx+", "+moduleNewShifty);
-            console.log(moduleOldShiftx+", "+moduleOldShifty);
+            //console.log(moduleNewShiftx+", "+moduleNewShifty);
+            //console.log(moduleOldShiftx+", "+moduleOldShifty);
             //console.log(newShiftx+", "+newShifty);
             shift.x = moduleNewShiftx - moduleOldShiftx;
             shift.y = moduleNewShifty - moduleOldShifty;
-            console.log(shift.x+", "+shift.y);
+            //console.log(shift.x+", "+shift.y);
             shift.x *= this.cellSize;
             shift.y *= this.cellSize;
             shift.angle = angle;

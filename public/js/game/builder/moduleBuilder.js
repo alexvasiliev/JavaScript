@@ -2,13 +2,11 @@
 
 define([
     'classy',
-    'pixi',
     'game/slot',
     'game/connection',
     'game/module'
 ], function (
     Class,
-    Pixi,
     Slot,
     Connection,
     Module
@@ -67,10 +65,11 @@ define([
             //console.log("readConnection");
             var connectionID = Number(this.getValue(target, "id"));
             var targetID = Number(this.getValue(target, "targetId"));
+            var moduleID = Number(this.getValue(target, "moduleId"));
             var size = Number(this.getValue(target, "size"));
             var x = Number(this.getValue(target, "x"));
             var y = Number(this.getValue(target, "y"));
-            this.addConnection(size, x, y, connectionID, targetID);
+            this.addConnection(size, x, y, connectionID, moduleID, targetID);
             return;
         },
         readSlot : function (target){
@@ -154,7 +153,7 @@ define([
                 return;
             }
         },
-        addConnection : function(size, cellx, celly, id, targetId){
+        addConnection : function(size, cellx, celly, id, moduleId, targetId){
             //console.trace();
             //console.log(this);
             if(this.module.map[cellx][celly] != null){
@@ -183,6 +182,9 @@ define([
 
                 if(id){
                     newConnection.id = id;
+                }
+                if(moduleId){
+                    newConnection.moduleId = moduleId;
                 }
                 if(targetId){
                     newConnection.targetId = targetId;

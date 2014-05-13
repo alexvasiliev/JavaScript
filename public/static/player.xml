@@ -8,52 +8,44 @@
 		<tip>false</tip>
 		<connection>
 			<id>1</id>
-			<targetId>5</targetId>
+			<moduleId>2</moduleId>
+			<targetId>1</targetId>
 			<x>2</x>
 			<y>0</y>
 			<size>1</size>
 		</connection>
 		<connection>
 			<id>2</id>
-			<targetId>6</targetId>
+			<moduleId>3</moduleId>
+			<targetId>1</targetId>
 			<x>1</x>
 			<y>0</y>
 			<size>1</size>
 		</connection>
 		<connection>
 			<id>3</id>
-			<targetId>7</targetId>
-			<x>0</x>
-			<y>1</y>
-			<size>1</size>
-		</connection>
-		<connection>
-			<id>4</id>
-			<targetId>0</targetId>
+			<moduleId>4</moduleId>
+			<targetId>1</targetId>
 			<x>0</x>
 			<y>0</y>
 			<size>1</size>
 		</connection>
-	</module>
-	<module>
-		<id>2</id>
-		<width>2</width>
-		<height>3</height>
-		<tip>false</tip>
+		<connection>
+			<id>4</id>
+			<moduleId>5</moduleId>
+			<targetId>1</targetId>
+			<x>0</x>
+			<y>4</y>
+			<size>1</size>
+		</connection>
 		<connection>
 			<id>5</id>
-			<targetId>0</targetId>
-			<x>0</x>
-			<y>1</y>
+			<moduleId>6</moduleId>
+			<targetId>1</targetId>
+			<x>2</x>
+			<y>4</y>
 			<size>1</size>
 		</connection>
-		<slot>
-			<id>1</id>
-			<targetId>0</targetId>
-			<x>1</x>
-			<y>1</y>
-			<size>1</size>
-		</slot>
 	</module>
 	<module>
 		<id>2</id>
@@ -61,7 +53,8 @@
 		<height>3</height>
 		<tip>false</tip>
 		<connection>
-			<id>6</id>
+			<id>1</id>
+			<moduleId>0</moduleId>
 			<targetId>0</targetId>
 			<x>0</x>
 			<y>1</y>
@@ -69,6 +62,7 @@
 		</connection>
 		<slot>
 			<id>1</id>
+			<moduleId>0</moduleId>
 			<targetId>0</targetId>
 			<x>1</x>
 			<y>1</y>
@@ -76,12 +70,13 @@
 		</slot>
 	</module>
 	<module>
-		<id>2</id>
+		<id>3</id>
 		<width>2</width>
 		<height>3</height>
 		<tip>false</tip>
 		<connection>
-			<id>7</id>
+			<id>1</id>
+			<moduleId>0</moduleId>
 			<targetId>0</targetId>
 			<x>0</x>
 			<y>1</y>
@@ -89,6 +84,73 @@
 		</connection>
 		<slot>
 			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>1</x>
+			<y>1</y>
+			<size>1</size>
+		</slot>
+	</module>
+	<module>
+		<id>4</id>
+		<width>2</width>
+		<height>3</height>
+		<tip>false</tip>
+		<connection>
+			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>0</x>
+			<y>1</y>
+			<size>1</size>
+		</connection>
+		<slot>
+			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>1</x>
+			<y>1</y>
+			<size>1</size>
+		</slot>
+	</module>
+	<module>
+		<id>5</id>
+		<width>2</width>
+		<height>3</height>
+		<tip>false</tip>
+		<connection>
+			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>0</x>
+			<y>1</y>
+			<size>1</size>
+		</connection>
+		<slot>
+			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>1</x>
+			<y>1</y>
+			<size>1</size>
+		</slot>
+	</module>
+	<module>
+		<id>6</id>
+		<width>2</width>
+		<height>3</height>
+		<tip>false</tip>
+		<connection>
+			<id>1</id>
+			<moduleId>0</moduleId>
+			<targetId>0</targetId>
+			<x>0</x>
+			<y>1</y>
+			<size>1</size>
+		</connection>
+		<slot>
+			<id>1</id>
+			<moduleId>0</moduleId>
 			<targetId>0</targetId>
 			<x>1</x>
 			<y>1</y>

@@ -145,6 +145,12 @@ define([
             var moduleOldBaseShiftx = connectionOld.x + 0.5 - connectionOld.owner.mapColomns/2;
             var moduleOldBaseShifty = connectionOld.y + 0.5 - connectionOld.owner.mapRows/2;
 
+            moduleNewBaseShiftx -= 0.5 * Math.sin(connectionNew.angle);
+            moduleNewBaseShifty += 0.5 * Math.cos(connectionNew.angle);
+
+            moduleOldBaseShiftx -= 0.5 * Math.sin(connectionOld.angle);
+            moduleOldBaseShifty += 0.5 * Math.cos(connectionOld.angle);
+
             /*var baseShiftx = connectionOld.owner.mapColomns/2 - connectionNew.owner.mapColomns/2;
             var baseShifty = connectionOld.owner.mapRows/2 - connectionNew.owner.mapRows/2;
             console.log(baseShiftx+", "+baseShifty);

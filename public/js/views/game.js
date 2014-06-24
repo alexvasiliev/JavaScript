@@ -29,7 +29,10 @@ define([
 			//this.container.style.display = "none";
 			document.body.appendChild(this.container);
 			if (this.checkSupport()) {
+				this.container.setAttribute('style', 'display:none');
+				document.body.appendChild(this.container);
 				this.render();
+				this.game = Game();
 			} else {
 				this.renderSupportError();
 			}
@@ -58,7 +61,8 @@ define([
             console.log("game::show");
 			this.container.style.display = "block";
 			this.trigger("view::show");
-			this.game = Game();
+			
+			this.game.startNew();
         },
         hide: function () {
             console.log("game::hide");

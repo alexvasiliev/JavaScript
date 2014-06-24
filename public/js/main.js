@@ -9,6 +9,7 @@ require.config({
         Connector: "lib/Connector",
         FnQuery: "lib/FnQuery",
 		modernizr: "lib/modernizr_custom",
+        pixi: "lib/pixi",
         "socket.io": "/socket.io/socket.io"
     },
     shim: {

@@ -94,9 +94,48 @@ define([
 	// Обмен сообщениями
 	server.on('message', function(data, answer){
 		//console.log('messageCon');
-		console.log('message', data);
+		//console.log('message', data);
+		game.angle = true;
+		//console.log(data.angle);
+		if(data.name == "gamma")
+		{
+			//console.log("alpha " + data.angle);
+			game.gamma = data.angle;
+            $(document).trigger('gamma');
+		}
+		else if(data.name == "beta")
+		{
+			game.beta = data.angle;
+			//console.log("beta " + data.angle);
+            $(document).trigger('beta');
+		}
+		/*if(data == 1)
+        {
+            //console.log("left");
+            $(document).trigger('left');
+        }
+        else if(data == 2)
+        {
+            //console.log("rigth");
+            $(document).trigger('rigth');
+        }
+        else if(data == 3)
+        {
+            //console.log("back");
+            $(document).trigger('back');
+        }
+        else if(data == 4)
+        {
+            //console.log("forward");
+            $(document).trigger('forward');
+        }
+        else if(data == 5)
+        {
+            //console.log("shoot");
+            $(document).trigger('shoot');
+        }*/
 
-		$(document).trigger('action', data);
+		//$(document).trigger('action', data);
 		answer('answer');
 
 	});

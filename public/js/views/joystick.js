@@ -14,6 +14,14 @@ define([
     var obj = {};
     obj.name = null; 
     obj.angle = null;
+		
+	function sendButton(id) {
+		obj={};
+		obj.name = "button";
+        obj.angle = id;
+		window.server.send( obj, function(){});
+	}
+		
     var View = Backbone.View.extend({
         template: tmpl,
         className: "#joystick",
@@ -21,6 +29,8 @@ define([
         container: document.createElement("div"),
 
         initialize: function () {
+			
+						
             this.container.id = this.viewName;
             //this.container.style.display = 'none';
             document.body.appendChild(this.container);
@@ -30,6 +40,7 @@ define([
 				this.renderError();
 			}
                  $('#'+this.viewName).html(this.template());
+
                 $("#helpMsg").hide();
                 $("#helpMsg").css("opacity", 0.5)
                 $("#helpMsg").css("font-size" , "30px");
@@ -65,43 +76,21 @@ define([
                                 obj.name = "gamma";
                                 obj.angle = gamma - event.gamma;
                                 window.server.send( obj, function(){});
-                                
-                                //alpha = event.alpha;
                             }
                             if(Math.abs(event.beta - beta) > 0.5){
                                 obj.name = "beta";
                                 obj.angle = beta - event.beta;
                                 window.server.send( obj, function(){});
-                                
-                                //gamma = event.gamma;
                             }
                         }
-                        /*else{
-                            if(Math.abs(event.alpha - alpha) > 0.5){
-                                if(event.alpha > 90  ){
-                                    window.server.send( 1 , function(){});
-                                }
-                                else{
-                                    //div.innerHTML = "move right <br/>";
-                                    window.server.send( 2, function(){});
-                                }
-                                alpha = event.alpha;
-                            }
-                            if(Math.abs(event.beta - beta) > 0.5){
-                                if(event.beta  > -45 ){
-                                    //div.innerHTML += "move top <br/>";
-                                    window.server.send( 4, function(){});
-                                }
-                                else{
-                                    //div.innerHTML += "move bot <br/>";
-                                    window.server.send( 3, function(){});                            
-                                }
-                                gamma = event.gamma;
-                            }
-                        }*/
-                    //var div = document.getElementById('joystick');
-                    //div.innerHTML = event.alpha +  " " + event.beta + " " + event.gamma + "<br/>";
                 });
+         //  console.log(document.getElementById('joy_fire1'));
+            //console.log($('#joy_fire1'));
+            document.getElementById('joy_fire1').addEventListener('click',function(){sendButton(1)},false);
+            document.getElementById('joy_fire2').addEventListener('click',function(){sendButton(2)},false);
+            document.getElementById('joy_fire3').addEventListener('click',function(){sendButton(3)},false);
+            document.getElementById('joy_fire4').addEventListener('click',function(){sendButton(4)},false);
+            document.getElementById('joy_pause').addEventListener('click',function(){sendButton(5)},false);
             
         },
 		renderError: function () {
@@ -120,6 +109,7 @@ define([
             console.log("show");
             this.container.style.display = 'block';
             this.trigger("view::show");
+
             //console.log($(this.className))
             //$(this.className).trigger('show');
         },

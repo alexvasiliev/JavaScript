@@ -109,33 +109,31 @@ define([
 			//console.log("beta " + data.angle);
             $(document).trigger('beta');
 		}
-		/*if(data == 1)
-        {
-            //console.log("left");
-            $(document).trigger('left');
-        }
-        else if(data == 2)
-        {
-            //console.log("rigth");
-            $(document).trigger('rigth');
-        }
-        else if(data == 3)
-        {
-            //console.log("back");
-            $(document).trigger('back');
-        }
-        else if(data == 4)
-        {
-            //console.log("forward");
-            $(document).trigger('forward');
-        }
-        else if(data == 5)
-        {
-            //console.log("shoot");
-            $(document).trigger('shoot');
-        }*/
-
-		//$(document).trigger('action', data);
+		else if(data.name == "button")
+		{
+			//console.log("button");
+			$(document).trigger('button', data.angle);
+		}
+		/*else if(data.name == "button1")
+		{
+			$(document).trigger('button1');
+		}
+		else if(data.name == "button2")
+		{
+			$(document).trigger('button2');
+		}
+		else if(data.name == "button3")
+		{
+			$(document).trigger('button3');
+		}
+		else if(data.name == "button4")
+		{
+			$(document).trigger('button4');
+		}
+		else if(data.name == "button5")
+		{
+			$(document).trigger('button5');
+		}*/
 		answer('answer');
 
 	});

@@ -48,8 +48,17 @@ define([
         move : function () {
             //console.log("hi");
             var backwardsPower = 0.3;
-
-            if(game.keydown["z"] == true){
+            if(game.phoneButton == 1)
+            {
+                this.setCanonsState(0);
+            }else if(game.phoneButton == 2){
+                this.setCanonsState(1);
+            }else if(game.phoneButton == 3){
+                this.setCanonsState(2);
+            }else if(game.phoneButton == 4){
+                this.setCanonsState(3);
+            }
+            /*if(game.keydown["z"] == true){
                 this.setCanonsState(0);
             }else if(game.keydown["x"] == true){
                 this.setCanonsState(1);
@@ -59,7 +68,8 @@ define([
                 this.setCanonsState(3);
             }else{
                 this.setCanonsState(-1);
-            }
+            }*/
+
             if(game.angle == true)
             {
 

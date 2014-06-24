@@ -1,15 +1,26 @@
 <fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
-<fest:doctype>html</fest:doctype>
-<html>
 	<head>
-		<meta charset="utf-8" />
-		<title>
-			<fest:value>json.title</fest:value>
-		</title>
-		<meta name="viewport" content="..." />
+		<title>joystick</title>
 	</head>
 	<body>
-		Hello world!
+		<form id="connectForm">
+			<input id="token" />
+			<button id="connect" type="submit">connect</button>
+		</form>
+		<div id="joystickk"></div>
+		<div id="helpMsg">
+			<div style="background:black;">
+				<div>
+					<img id="joy_fire1" src="button_s.png"/>
+					<img id="joy_fire2" src="button_n.png" class="joystick__button-right"/>
+				</div>
+				<div>
+					<img id="joy_fire3" src="button_r.png"/>
+					<img id="joy_pause" src="button_p.png" class="joystick__button-pause"/>
+					<img id="joy_fire4" src="button_m.png" class="joystick__button-right"/>
+				</div>
+			</div>
+		</div>
+		<script data-main="/examples/joystick" src="/js/lib/require.js"></script>
 	</body>
-</html>
 </fest:template>

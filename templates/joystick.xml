@@ -11,13 +11,13 @@
 		<div id="helpMsg">
 			<div style="background:black;">
 				<div>
-					<img src="static/button_s.png"/>
-					<img src="static/button_n.png" class="joystick__button-right"/>
+					<img id="joy_fire1" src="static/button_s.png"/>
+					<img id="joy_fire2" src="static/button_n.png" class="joystick__button-right"/>
 				</div>
 				<div>
-					<img src="static/button_r.png"/>
-					<img src="static/button_p.png" class="joystick__button-pause"/>
-					<img src="static/button_m.png" class="joystick__button-right"/>
+					<img id="joy_fire3" src="static/button_r.png"/>
+					<img id="joy_pause" src="static/button_p.png" class="joystick__button-pause"/>
+					<img id="joy_fire4" src="static/button_m.png" class="joystick__button-right"/>
 				</div>
 			</div>
 		</div>

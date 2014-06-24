@@ -60,7 +60,8 @@ window.requestAnimFrame = (function() {
             this.angle = false;
             this.gamma = 0;
             this.beta = 0;
-            
+            this.phoneButton = 0;
+
             this.enemyCooldown = 5000;
             this.enemyTimer = this.enemyCooldown;
             this.enemyPower = 1;
@@ -113,8 +114,17 @@ window.requestAnimFrame = (function() {
 
             this.spacePressed = false;
 
+            this.pausePressed = false;
+
             this.animloop();
         },
+        /*falseAll : function () {
+            game.phonekey["button1"] = false;
+            game.phonekey["button2"] = false;
+            game.phonekey["button3"] = false;
+            game.phonekey["button4"] = false;
+            game.phonekey["button5"] = false;
+        }*/
         listenToKeyboard : function () {
             var game = this;
             this.keydown = [];
@@ -126,17 +136,15 @@ window.requestAnimFrame = (function() {
             });
             $(document).bind("alpha",function(){
                 game.angle = true;
-                //game.beta = false;
-                //console.log("alpha " + game.angle);
-                //console.log(data);//data.angle);
                 });
             $(document).bind("beta",function(){
 
-                //game.alpha = false;
                 game.angle = true;
-                //game.angle["beta"] = data;
-                //console.log("beta " + game.angle);
-                //console.log(data);//data.angle);
+                });
+            $(document).bind("button",function(event, data){
+                
+                game.phoneButton = data;
+                console.log(data);
                 });
         },
         checkPause : function () {
@@ -152,6 +160,20 @@ window.requestAnimFrame = (function() {
             }else{
                 this.spacePressed = false;
             }
+            if(this.phoneButton == 5)
+            {          
+                if(this.pausePressed == false){
+                    if(this.pause == false){
+                        this.pause = true;
+                    }else{
+                        this.pause = false;
+                    }
+                }
+                this.pausePressed = true;
+            }else{
+                this.pausePressed = false;
+            }
+
         },
         addStars : function (amount) {
             for(var i = 0; i < amount; i++){

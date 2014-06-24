@@ -384,6 +384,7 @@ window.requestAnimFrame = (function() {
             if(this.lastSeconds == 0){
                 console.log("Game Over");
                 this.play = false;
+                $(document).trigger("game::over", this.score);
             }
 
             

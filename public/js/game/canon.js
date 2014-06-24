@@ -53,8 +53,8 @@ define([
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                //this.damage = 15;
-                this.damage = 0;
+                this.damage = 15;
+                //this.damage = 100;
                 this.shotSpeed = 4;
                 this.shotLifeTime = 150;
                 this.shotEnergy = 50;
@@ -70,8 +70,8 @@ define([
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                //this.damage = 3;
-                this.damage = 0;
+                this.damage = 3;
+                //this.damage = 100;
                 this.shotSpeed = 6;
                 this.shotLifeTime = 40;
                 this.shotEnergy = 20;
@@ -234,6 +234,7 @@ define([
         },
         shot : function () {
             //console.log(this.target)
+            game.phoneButton = 0;
             this.ready = false;
             this.bind.energy -= this.shotEnergy;
             this.charge = this.loaded;

@@ -25,7 +25,24 @@ define([
             }else if(baseClass == 2){
                 this.width = 13;
                 this.height = 18;
+            }else if(baseClass == 3){
+                this.width = 13;
+                this.height = 18;
+            }else if(baseClass == 4){
+                this.width = 13;
+                this.height = 18;
+            }else if(baseClass == 5){
+                this.width = 13;
+                this.height = 18;
+            }else if(baseClass == 6){
+                this.width = 13;
+                this.height = 45;
             }
+
+            this.shotAmount = 1;
+            this.shotAngle = 0;
+            this.autoAim = true;
+            this.bulletType = secondClass;
 
             if(secondClass == 1){
 
@@ -36,13 +53,14 @@ define([
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                this.damage = 25;
+                //this.damage = 15;
+                this.damage = 0;
                 this.shotSpeed = 4;
                 this.shotLifeTime = 150;
-                this.shotWidth = this.shotHeight = 5;
-                this.shotFriction = 0.995;
                 this.shotEnergy = 50;
-                this.autoAim = true;
+                this.shotWidth = 5;
+                this.shotHeight = 18;
+                this.shotFriction = 0.998;
             }else if(secondClass == 2){
 
                 this.gun.width = 4;
@@ -52,13 +70,14 @@ define([
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                this.damage = 4;
+                //this.damage = 3;
+                this.damage = 0;
                 this.shotSpeed = 6;
                 this.shotLifeTime = 40;
                 this.shotEnergy = 20;
-                this.shotWidth = this.shotHeight = 3;
+                this.shotWidth = 6;
+                this.shotHeight = 10;
                 this.shotFriction = 0.999;
-                this.autoAim = true;
             }else if(secondClass == 3){
 
                 this.gun.width = 4;
@@ -68,11 +87,12 @@ define([
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                this.damage = 4;
-                this.shotSpeed = 6;
-                this.shotLifeTime = 40;
-                this.shotEnergy = 20;
-                this.shotWidth = this.shotHeight = 3;
+                this.damage = 10;
+                this.shotSpeed = 10;
+                this.shotLifeTime = 60;
+                this.shotEnergy = 100;
+                this.shotWidth = 3;
+                this.shotHeight = 15;
                 this.shotFriction = 0.999;
                 this.autoAim = false;
             }else if(secondClass == 4){
@@ -80,16 +100,19 @@ define([
                 this.gun.width = 4;
                 this.gun.height = 18;
 
-                this.loaded = 1;
-                this.reloadSpeed = 0.2;
+                this.loaded = 10;
+                this.reloadSpeed = 1;
                 this.side = 0;
                 this.ready = false;
                 this.damage = 4;
-                this.shotSpeed = 6;
-                this.shotLifeTime = 40;
-                this.shotEnergy = 20;
-                this.shotWidth = this.shotHeight = 3;
-                this.shotFriction = 0.999;
+                this.shotSpeed = 12;
+                this.shotLifeTime = 35;
+                this.shotEnergy = 40;
+                this.shotWidth = 4;
+                this.shotHeight = 8;
+                this.shotFriction = 0.95;
+                this.shotAmount = 5;
+                this.shotAngle = 0.2;
                 this.autoAim = false;
             }else if(secondClass == 5){
 
@@ -97,15 +120,33 @@ define([
                 this.gun.height = 25;
 
                 this.loaded = 10;
+                this.reloadSpeed = 0.8;
+                this.side = 0;
+                this.ready = false;
+                this.damage = 90;
+                this.shotSpeed = 1;
+                this.shotLifeTime = 100;
+                this.shotEnergy = 500;
+                this.shotWidth = 8;
+                this.shotHeight = 20;
+                this.shotFriction = 1.05;
+                this.autoAim = false;
+            }else if(secondClass == 6){
+
+                this.gun.width = 8;
+                this.gun.height = 30;
+
+                this.loaded = 30;
                 this.reloadSpeed = 0.2;
                 this.side = 0;
                 this.ready = false;
-                this.damage = 80;
-                this.shotSpeed = 6;
-                this.shotLifeTime = 100;
-                this.shotWidth = this.shotHeight = 5;
-                this.shotFriction = 0.995;
-                this.shotEnergy = 50;
+                this.damage = 501;
+                this.shotSpeed = 5;
+                this.shotLifeTime = 150;
+                this.shotEnergy = 500;
+                this.shotWidth = 15;
+                this.shotHeight = 45;
+                this.shotFriction = 1;
                 this.autoAim = false;
             }
             this.maxRange = this.shotLifeTime * this.shotSpeed;
@@ -196,17 +237,25 @@ define([
             this.ready = false;
             this.bind.energy -= this.shotEnergy;
             this.charge = this.loaded;
-            var shot = new Shot(this.side, 1);
-            shot.x = this.gun.x;
-            shot.y = this.gun.y;
-            shot.vx = this.shotSpeed*Math.sin(this.angle);
-            shot.vy = -this.shotSpeed*Math.cos(this.angle);
-            shot.friction = this.shotFriction;
-            shot.maxLifetime = this.shotLifeTime;
-            shot.baseWidth = this.shotWidth;
-            shot.baseHeight = this.shotHeight;
-            shot.damage = this.damage;
-            game.addShot(shot);
+
+            var angleShift = - this.shotAngle * (this.shotAmount - 1) / 2;
+            for(var i = 0; i < this.shotAmount; i++){
+                //console.log(angleShift);
+                var shot = new Shot(this.side, this.bulletType);
+                shot.x = this.gun.x;
+                shot.angle = this.angle + angleShift;
+                shot.y = this.gun.y;
+                shot.vx = this.shotSpeed*Math.sin(this.angle + angleShift);
+                shot.vy = -this.shotSpeed*Math.cos(this.angle + angleShift);
+                shot.friction = this.shotFriction;
+                shot.maxLifetime = this.shotLifeTime;
+                shot.baseWidth = this.shotWidth;
+                shot.baseHeight = this.shotHeight;
+                shot.damage = this.damage;
+                game.addShot(shot);
+
+                angleShift += this.shotAngle;
+            }
         },
         draw : function () {
             if(this.bind.destroyed == false){

@@ -47,32 +47,29 @@ window.requestAnimFrame = (function() {
         startNew : function (){
             this.clearAll();
 
+            this.addPlayer();
+            this.addStars();
+
             this.x = 0;
             this.y = 0;
-
-            this.vx = 0;
-            this.vy = 0;
-
-            this.addPlayer();
-            this.addStars(30);
-            this.addGlows(20);
 
             this.angle = false;
             this.gamma = 0;
             this.beta = 0;
+
+            this.vx = 0;
+            this.vy = 0;
             
             this.enemyCooldown = 5000;
             this.enemyTimer = this.enemyCooldown;
             this.enemyPower = 1;
             this.score = 0;
 
-            this.lastSeconds = 100;
+            this.lastSeconds = 30;
 
             this.pause = false;
             this.lost = false;
             this.play = true;
-            this.addEnemy(1, 0);
-            //this.addEnemy(1, 1);
         },
         start : function (){
             this.play = true;
@@ -118,6 +115,7 @@ window.requestAnimFrame = (function() {
         listenToKeyboard : function () {
             var game = this;
             this.keydown = [];
+            //this.angle = [];
             $(document).bind("keydown", function(event) {
                 game.keydown[String.fromCharCode(event.which).toLowerCase()] = true;
             });
@@ -125,7 +123,7 @@ window.requestAnimFrame = (function() {
                 game.keydown[String.fromCharCode(event.which).toLowerCase()] = false;
             });
             $(document).bind("alpha",function(){
-                game.angle = true;
+                game.alpha = true;
                 //game.beta = false;
                 //console.log("alpha " + game.angle);
                 //console.log(data);//data.angle);
@@ -133,11 +131,30 @@ window.requestAnimFrame = (function() {
             $(document).bind("beta",function(){
 
                 //game.alpha = false;
-                game.angle = true;
+                game.beta = true;
                 //game.angle["beta"] = data;
                 //console.log("beta " + game.angle);
                 //console.log(data);//data.angle);
                 });
+            /*$(document).bind("left",function(){
+                //game.keydown["a"] = true;
+                console.log("left");
+                });
+            $(document).bind("rigth",function(){
+                //game.keydown["d"] = true;
+                console.log("rigth");
+                
+                });
+            $(document).bind("back",function(){
+                //game.keydown["s"] = true;
+                console.log("back");
+                
+                });
+            $(document).bind("forward",function(){
+                //game.keydown["w"] = true;
+                console.log("forward");
+                
+                });*/
         },
         checkPause : function () {
             if(this.keydown[" "] == true){
@@ -153,33 +170,21 @@ window.requestAnimFrame = (function() {
                 this.spacePressed = false;
             }
         },
-        addStars : function (amount) {
-            for(var i = 0; i < amount; i++){
+        addStars : function () {
+            for(var i = 0; i < 10; i++){
                 var newStar = new StaticDepthObject("star", 1);
-            }
-        },
-        addGlows : function (amount) {
-            for(var i = 0; i < amount; i++){
-                var newStar = new StaticDepthObject("glow", 1);
             }
         },
         addPlayer : function () {
             this.playerShip = new Ship(1, 1);
             this.playerShip.x = this.renderer.sceneWidth/2;
             this.playerShip.y = this.renderer.sceneHeight/2;
-            this.x = -this.playerShip.x;
-            this.y = -this.playerShip.y;
             this.playerShip.velocity = 0.12;
-            this.playerShip.angleVelocity = 0.003;
+            this.playerShip.angleVelocity = 0.004;
             this.ships.push(this.playerShip);
 
             this.player = new Player(this.playerShip, 1);
             this.pilots.push(this.player);
-
-            var mainCanon = new Canon(6, 6, 1);
-            this.playerShip.attachItem(mainCanon, "canon", this.playerShip.body.slots[0], this.playerShip.body);
-            mainCanon.autoAim = false;
-            this.playerShip.canonsGroup0.push(mainCanon);
 
             var downModule = new Module(1, 0);
             this.playerShip.attachModule(downModule, downModule.connections[0], 0, 
@@ -189,7 +194,7 @@ window.requestAnimFrame = (function() {
             this.playerShip.attachModule(downDownModule, downDownModule.connections[0], 0, 
                 downModule.connections[1], downModule);
 
-            var plasmaCanon = new Canon(5, 5, 1);
+            var plasmaCanon = new Canon( 1, 5, 1);
             this.playerShip.attachItem(plasmaCanon, "canon", downDownModule.slots[0], downDownModule);
             plasmaCanon.autoAim = false;
             this.playerShip.canonsGroup1.push(plasmaCanon);
@@ -199,21 +204,21 @@ window.requestAnimFrame = (function() {
             this.playerShip.attachModule(leftModule, leftModule.connections[3], 0, 
                 this.playerShip.body.connections[2], this.playerShip.body);
 
-            var leftCanon = new Canon(3, 3, 1);
+            var leftCanon = new Canon( 2, 2, 1);
             this.playerShip.attachItem(leftCanon, "canon", leftModule.slots[0], leftModule);
             leftCanon.autoAim = false;
             this.playerShip.canonsGroup2.push(leftCanon);
 
             var leftDownModule = new Module(1, 0);
-            this.playerShip.attachModule(leftDownModule, leftDownModule.connections[3], 0, 
-                this.playerShip.body.connections[4], this.playerShip.body);
+            this.playerShip.attachModule(leftDownModule, leftDownModule.connections[0], 0, 
+                leftModule.connections[1], leftModule);
 
 
             var leftDownLeftModule = new Module(1, 0);
             this.playerShip.attachModule(leftDownLeftModule, leftDownLeftModule.connections[3], 0, 
                 leftDownModule.connections[2], leftDownModule);
 
-            var leftDownLeftCanon = new Canon(4, 4, 1);
+            var leftDownLeftCanon = new Canon( 2, 2, 1);
             this.playerShip.attachItem(leftDownLeftCanon, "canon", leftDownLeftModule.slots[0], leftDownLeftModule);
             leftDownLeftCanon.autoAim = false;
             this.playerShip.canonsGroup3.push(leftDownLeftCanon);
@@ -224,21 +229,21 @@ window.requestAnimFrame = (function() {
             this.playerShip.attachModule(rightModule, rightModule.connections[2], 0, 
                 this.playerShip.body.connections[3], this.playerShip.body);
 
-            var rightCanon = new Canon(3, 3, 1);
+            var rightCanon = new Canon( 2, 2, 1);
             this.playerShip.attachItem(rightCanon, "canon", rightModule.slots[0], rightModule);
             rightCanon.autoAim = false;
             this.playerShip.canonsGroup2.push(rightCanon);
 
             var rightDownModule = new Module(1, 0);
-            this.playerShip.attachModule(rightDownModule, rightDownModule.connections[2], 0, 
-                this.playerShip.body.connections[5], this.playerShip.body);
+            this.playerShip.attachModule(rightDownModule, rightDownModule.connections[0], 0, 
+                rightModule.connections[1], rightModule);
 
 
             var rightDownRightModule = new Module(1, 0);
             this.playerShip.attachModule(rightDownRightModule, rightDownRightModule.connections[2], 0, 
                 rightDownModule.connections[3], rightDownModule);
 
-            var rightDownRightCanon = new Canon(4, 4, 1);
+            var rightDownRightCanon = new Canon( 2, 2, 1);
             this.playerShip.attachItem(rightDownRightCanon, "canon", rightDownRightModule.slots[0], rightDownRightModule);
             rightDownRightCanon.autoAim = false;
             this.playerShip.canonsGroup3.push(rightDownRightCanon);
@@ -299,7 +304,7 @@ window.requestAnimFrame = (function() {
                 this.playerShip.draw();
                 renderer.resetTempShift();
             }*/
-            renderer.drawText(Math.round(this.score*5), 20, 50, 15, "#FFF");
+            renderer.drawText(Math.round(this.score), 20, 50, 15, "#FFF");
         },
         drawAll : function () {
             this.renderer.clearScene();
@@ -314,17 +319,12 @@ window.requestAnimFrame = (function() {
         checkBroders : function () {
             this.x += this.vx;
             this.y += this.vy;
-            var speedK = 0.01;
-            this.vx -= (this.playerShip.x + this.x)*speedK;
-            this.vy -= (this.playerShip.y + this.y)*speedK;
+            var speed = 0.01;
+            this.vx -= (this.playerShip.x + this.x - this.renderer.sceneWidth/2)*speed;
+            this.vy -= (this.playerShip.y + this.y - this.renderer.sceneHeight/2)*speed;
             //console.log((this.playerShip.x + this.x) + ", " + (this.playerShip.y + this.y));
             this.vx *= this.friction;
             this.vy *= this.friction;
-
-            var summSpeed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-
-            //console.log(renderer.cameraDepth);
-            renderer.cameraDepth = 0.5 + summSpeed/3;
         },
         addEnemy : function () {
             //console.log(this.enemyTimer);
@@ -355,15 +355,9 @@ window.requestAnimFrame = (function() {
             });
         },
         gameOver :function () {
+            console.log("Game Over");
             this.lastSeconds -= 1;
-            if(this.lastSeconds % 20 == 0){
-                this.playerShip.body.crush();
-            }
-            if(this.lastSeconds == 0){
-                console.log("Game Over");
-                this.play = false;
-            }
-
+            this.play = false;
             
         },
         /*submit : function () {

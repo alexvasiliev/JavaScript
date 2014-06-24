@@ -35,7 +35,11 @@ define([
                 $("#helpMsg").css("font-size" , "30px");
                 
                 window.addEventListener('orientationchange', function(){
-                    //alert("Orientation: " + window.orientation);
+                    if(window.orientation != 90)
+                    {
+                        alert("Change orientation of u'r phone to 90 degrees");
+                        //alert("Orientation: " + window.orientation);
+                    }
                 });
                 $(document).on("start",function(){
                     console.log("trigger");
@@ -46,14 +50,6 @@ define([
                     console.log("click");
                     });
                 });
-                /*codes
-                1 * - move
-                1 1 - move left
-                1 2 - move right
-                1 3 - move bot
-                1 4 - move top
-                3 - shoot
-                */
                 window.addEventListener('deviceorientation', function(event){
                     var div = document.getElementById('joystick');
                         if (i==0){

@@ -4,5 +4,4 @@
 @import "_gameover";
 @import "_mainmenu";
 @import "_scoreboard";
-@import "_joystick";
 

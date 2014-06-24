@@ -8,18 +8,19 @@ define([
     var Player = Pilot.$extend ( {
         __init__ : function(ship, side) {
             this.$super(ship, side);
+            ship.canonsGroup0 = [];
             ship.canonsGroup1 = [];
             ship.canonsGroup2 = [];
             ship.canonsGroup3 = [];
-            //var fl = 0;
         },
         turn : function () {
             if(this.ship){
                 if(this.ship.body.destroyed == true){
                     game.gameOver();
+                }else{
+                    //this.checkTarget();
+                    this.move();
                 }
-                this.checkTarget();
-                this.move();
                 if(this.target){
                     this.attack();
                 }
@@ -30,37 +31,54 @@ define([
         checkTarget : function () {
             this.$super();
         },
+        setCanonsGroupState : function (group, state){
+            for (var i = 0; i < this.ship["canonsGroup" + group].length; i++){
+                this.ship["canonsGroup" + group][i].shoot = state;
+            }
+        },
+        setCanonsState : function (activeGroup){
+            for(var i = 0; i < 4; i++){
+                if(i == activeGroup){
+                    this.setCanonsGroupState(i, true);
+                }else{
+                    this.setCanonsGroupState(i, false);
+                }
+            }
+        },
         move : function () {
             //console.log("hi");
             var backwardsPower = 0.3;
-            for (var i = 0; i < this.ship.canonsGroup1.length; i++){
-                if(game.keydown["x"] == true){
-                    this.ship.canonsGroup1[i].shoot = true;
-                }else{
-                    this.ship.canonsGroup1[i].shoot = false;
-                }
-            }
-            for (var i = 0; i < this.ship.canonsGroup2.length; i++){
-                if(game.keydown["c"] == true){
-                    this.ship.canonsGroup2[i].shoot = true;
-                }else{
-                    this.ship.canonsGroup2[i].shoot = false;
-                }
-            }
-            for (var i = 0; i < this.ship.canonsGroup3.length; i++){
-                if(game.keydown["v"] == true){
-                    this.ship.canonsGroup3[i].shoot = true;
-                }else{
-                    this.ship.canonsGroup3[i].shoot = false;
-                }
+
+            if(game.keydown["z"] == true){
+                this.setCanonsState(0);
+            }else if(game.keydown["x"] == true){
+                this.setCanonsState(1);
+            }else if(game.keydown["c"] == true){
+                this.setCanonsState(2);
+            }else if(game.keydown["v"] == true){
+                this.setCanonsState(3);
+            }else{
+                this.setCanonsState(-1);
             }
             if(game.angle == true)
             {
 
-                this.ship.vx += this.ship.velocity*Math.sin(this.ship.angle) * (game.gamma * 0.1) ;
-                this.ship.vy -= this.ship.velocity*Math.cos(this.ship.angle) * (game.gamma * 0.1);
-                this.ship.vangle += this.ship.angleVelocity * (game.beta);
+                var tempGamma = game.gamma;
+                if(tempGamma > 50)
+                {
+                    tempGamma = 50;
+                }
+                var tempBeta = game.beta;
+                if(tempBeta > 30)
+                {
+                    tempBeta = 30;
+                }
+                
+                this.ship.vx += this.ship.velocity*Math.sin(this.ship.angle) * (tempBeta * 0.05) ;
+                this.ship.vy -= this.ship.velocity*Math.cos(this.ship.angle) * (tempBeta * 0.05);
+                this.ship.vangle += this.ship.angleVelocity * (tempGamma * 0.02);
             }
+
             else if(game.keydown["w"] == true){
                 this.ship.vx += this.ship.velocity*Math.sin(this.ship.angle);
                 this.ship.vy -= this.ship.velocity*Math.cos(this.ship.angle);
@@ -73,7 +91,6 @@ define([
             }else if(game.keydown["d"] == true){
                 this.ship.vangle += this.ship.angleVelocity;
             }
-
 
         },
         attack : function () {

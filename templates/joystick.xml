@@ -9,9 +9,17 @@
 		</form>
 		<div id="joystickk"></div>
 		<div id="helpMsg">
-			<center>
-				Tap any where to shoot
-			</center>
+			<div style="background:black;">
+				<div>
+					<img src="static/button_s.png"/>
+					<img src="static/button_n.png" class="joystick__button-right"/>
+				</div>
+				<div>
+					<img src="static/button_r.png"/>
+					<img src="static/button_p.png" class="joystick__button-pause"/>
+					<img src="static/button_m.png" class="joystick__button-right"/>
+				</div>
+			</div>
 		</div>
 		<script data-main="/examples/joystick" src="/js/lib/require.js"></script>
 	</body>

@@ -162,16 +162,12 @@ window.requestAnimFrame = (function() {
             }
             if(this.phoneButton == 5)
             {          
-                if(this.pausePressed == false){
-                    if(this.pause == false){
-                        this.pause = true;
-                    }else{
-                        this.pause = false;
-                    }
+                this.phoneButton = 0;
+                if(this.pause == false){
+                    this.pause = true;
+                }else{
+                    this.pause = false;
                 }
-                this.pausePressed = true;
-            }else{
-                this.pausePressed = false;
             }
 
         },
